@@ -5,6 +5,7 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "shadcn-nuxt",
     ["@nuxtjs/google-fonts", { families: { Inter: [100, 200, 300, 400, 500, 600, 700, 800, 900] } }],
+    "@nuxtjs/supabase",
   ],
   shadcn: {
     /**
@@ -22,5 +23,12 @@ export default defineNuxtConfig({
   },
   googleFonts: {
     preload: true,
+  },
+  supabase: {
+    redirectOptions: {
+      login: "/login",
+      callback: "confirm",
+      exclude: ["/"],
+    },
   },
 });
