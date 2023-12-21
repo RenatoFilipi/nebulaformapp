@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Rocket } from "lucide-vue-next";
 const user = useSupabaseUser();
-console.log(user.value);
 
 useHead({
   title: "Nebulaform",
