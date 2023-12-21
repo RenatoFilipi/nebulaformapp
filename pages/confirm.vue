@@ -13,3 +13,7 @@ watch(
   { immediate: true }
 );
 </script>
+
+<template>
+  <div></div>
+</template>

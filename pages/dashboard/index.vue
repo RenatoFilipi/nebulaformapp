@@ -1,10 +1,22 @@
 <script setup lang="ts">
 import { Button } from "~/components/ui/button";
-const supabase = useSupabaseClient();
+import type { Database } from "~/lib/database.types";
+const supabase = useSupabaseClient<Database>();
+const user = useSupabaseUser();
 
 useHead({
   title: "Dashboard - Nebulaform",
 });
+
+const { data: forms } = await useAsyncData("forms", async () => {
+  const { data } = await supabase
+    .from("forms")
+    .select("*")
+    .eq("owner_id", user.value?.id as string);
+  return data;
+});
+
+console.log(forms.value);
 
 const onLogout = async () => {
   const { error } = await supabase.auth.signOut();
