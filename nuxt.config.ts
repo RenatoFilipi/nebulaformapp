@@ -33,4 +33,7 @@ export default defineNuxtConfig({
       exclude: ["/"],
     },
   },
+  image: {
+    dir: "assets/images",
+  },
 });

@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { Button } from "~/components/ui/button";
 import type { Database } from "~/lib/database.types";
 const supabase = useSupabaseClient<Database>();
 const user = useSupabaseUser();
 
 useHead({
   title: "Dashboard - Nebulaform",
+});
+
+definePageMeta({
+  layout: "application",
 });
 
 const { data: forms } = await useAsyncData("forms", async () => {
@@ -17,22 +20,12 @@ const { data: forms } = await useAsyncData("forms", async () => {
 });
 
 console.log(forms.value);
-
-const onLogout = async () => {
-  const { error } = await supabase.auth.signOut();
-  if (error) {
-    console.log(error);
-    return;
-  }
-  return navigateTo("/login");
-};
 </script>
 
 <template>
   <div class="flex justify-center items-center h-screen">
     <div class="flex flex-col items-center justify-center gap-6">
       <span>Logged page</span>
-      <Button @click="onLogout">Log out</Button>
     </div>
   </div>
 </template>
