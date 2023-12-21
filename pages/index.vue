@@ -2,8 +2,6 @@
 import { Rocket } from "lucide-vue-next";
 const user = useSupabaseUser();
 
-console.log(user.value);
-
 useHead({
   title: "Nebulaform",
 });
@@ -33,6 +31,7 @@ definePageMeta({
       <div class="flex flex-col justify-center items-center">
         <h1 class="text-5xl font-extrabold mb-2">Empower Your Business with Insightful Forms</h1>
         <h2 class="text-lg font-medium text-neutral-500 mb-10">Make Data-Driven Decisions with Confidence.</h2>
+        <h3>{{ $t("welcome") }}</h3>
         <Button asChild variant="default">
           <NuxtLink v-if="user" to="/confirm">Dashboard</NuxtLink>
           <NuxtLink v-else to="/signup">

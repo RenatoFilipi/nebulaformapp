@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     "@nuxtjs/supabase",
     "@nuxt/image",
     "@vueuse/nuxt",
+    "@nuxtjs/i18n",
   ],
   shadcn: {
     /**
@@ -35,5 +36,15 @@ export default defineNuxtConfig({
   },
   image: {
     dir: "assets/images",
+  },
+  i18n: {
+    vueI18n: "./lib/i18n.config.ts",
+    strategy: "no_prefix",
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: "i18n_redirected",
+      redirectOn: "root",
+      alwaysRedirect: true,
+    },
   },
 });
