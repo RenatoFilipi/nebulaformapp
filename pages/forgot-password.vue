@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { forgotPasswordStageType } from "~/lib/utils.type";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -13,7 +14,7 @@ const user = useSupabaseUser();
 const { toast } = useToast();
 
 useHead({
-  title: "Login - Nebulaform",
+  title: "Forgot Password - Nebulaform",
 });
 
 definePageMeta({
@@ -35,7 +36,6 @@ const isLoading = ref(false);
 const formSchema = toTypedSchema(
   z.object({
     email: z.string().email(),
-    password: z.string().min(6, { message: "must be at least 6 characters." }),
   })
 );
 
@@ -46,14 +46,7 @@ const form = useForm({
 const onSubmit = form.handleSubmit(async (values) => {
   try {
     isLoading.value = true;
-    const { error } = await supabase.auth.signInWithPassword({
-      email: values.email,
-      password: values.password,
-    });
-    if (error) {
-      throw new Error(error.message);
-    }
-    return navigateTo("/confirm");
+    console.log(values);
   } catch (err: any) {
     toast({
       variant: "destructive",
@@ -63,6 +56,8 @@ const onSubmit = form.handleSubmit(async (values) => {
     isLoading.value = false;
   }
 });
+
+const stage = ref<forgotPasswordStageType>("stageIsOnRequestForm");
 </script>
 
 <template>
@@ -70,7 +65,7 @@ const onSubmit = form.handleSubmit(async (values) => {
     <div class="flex justify-center items-center flex-col gap-4 p-4">
       <div class="flex flex-col justify-center items-center gap-4">
         <NuxtLink to="/"><NuxtImg src="/brand/logodark.svg" width="40"></NuxtImg></NuxtLink>
-        <h1 class="font-bold text-2xl">Sign in to your account</h1>
+        <h1 class="font-bold text-2xl">Forgot password</h1>
       </div>
       <div class="flex flex-col justify-center items-center p-6 w-[400px]">
         <form @submit="onSubmit" class="flex flex-col gap-4 w-full">
@@ -83,29 +78,15 @@ const onSubmit = form.handleSubmit(async (values) => {
               <FormMessage />
             </FormItem>
           </FormField>
-          <FormField v-slot="{ componentField }" name="password">
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input type="password" v-bind="componentField" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          </FormField>
           <Button class="w-full" type="submit">
             <div class="flex justify-center items-center" v-if="isLoading">
-              <Loader2 class="animate-spin mr-2 w-4 h-4" />Logging in
+              <Loader2 class="animate-spin mr-2 w-4 h-4" />Sending email
             </div>
-            <div v-else>Continue</div></Button
+            <div v-else>Send email</div></Button
           >
           <div class="flex flex-col gap-2 mt-4">
             <span class="text-sm"
-              >Don't have an account?
-              <NuxtLink to="/signup" class="text-primary hover:underline">Sign up</NuxtLink></span
-            >
-            <span class="text-sm"
-              >Forgot your password?
-              <NuxtLink to="/forgot-password" class="text-primary hover:underline">Reset password</NuxtLink></span
+              >Back to <NuxtLink to="/login" class="text-primary hover:underline">Login</NuxtLink></span
             >
           </div>
         </form>
