@@ -2,7 +2,6 @@
 
 <template>
   <div>
-    <ApplicationSharedNavbar />
     <slot />
   </div>
 </template>

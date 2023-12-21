@@ -15,6 +15,10 @@ useHead({
   title: "Login - Nebulaform",
 });
 
+definePageMeta({
+  layout: "default",
+});
+
 watch(
   user,
   () => {

@@ -23,9 +23,11 @@ console.log(forms.value);
 </script>
 
 <template>
-  <div class="flex justify-center items-center h-screen">
-    <div class="flex flex-col items-center justify-center gap-6">
-      <span>Logged page</span>
+  <div>
+    <div class="flex justify-center items-center h-screen">
+      <div class="flex flex-col items-center justify-center gap-6">
+        <span>Logged page</span>
+      </div>
     </div>
   </div>
 </template>

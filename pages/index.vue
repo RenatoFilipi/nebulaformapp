@@ -2,8 +2,14 @@
 import { Rocket } from "lucide-vue-next";
 const user = useSupabaseUser();
 
+console.log(user.value);
+
 useHead({
   title: "Nebulaform",
+});
+
+definePageMeta({
+  layout: "default",
 });
 </script>
 

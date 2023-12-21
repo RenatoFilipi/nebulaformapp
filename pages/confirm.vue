@@ -1,6 +1,10 @@
 <script setup lang="ts">
 const user = useSupabaseUser();
 
+definePageMeta({
+  layout: "default",
+});
+
 watch(
   user,
   () => {

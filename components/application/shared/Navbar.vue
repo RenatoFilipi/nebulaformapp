@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { CreditCard, LifeBuoy, LogOut, Settings, User } from "lucide-vue-next";
 import type { Database } from "~/lib/database.types";
 const user = useSupabaseUser();
 const supabase = useSupabaseClient<Database>();
@@ -28,42 +27,8 @@ const onLogout = async () => {
             <NuxtImg src="/brand/logodark.svg" width="35" />
           </NuxtLink>
         </div>
-        <div>
-          <DropdownMenu>
-            <DropdownMenuTrigger as-child>
-              <Avatar class="cursor-pointer"
-                ><AvatarFallback>{{ avatarUser }}</AvatarFallback></Avatar
-              >
-            </DropdownMenuTrigger>
-            <DropdownMenuContent class="w-56">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  <User class="mr-2 h-4 w-4" />
-                  <span>Profile</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <CreditCard class="mr-2 h-4 w-4" />
-                  <span>Billing</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Settings class="mr-2 h-4 w-4" />
-                  <span>Settings</span>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <LifeBuoy class="mr-2 h-4 w-4" />
-                <span>Support</span>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem @click="onLogout">
-                <LogOut class="mr-2 h-4 w-4" />
-                <span>Log out</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+        <div class="flex justify-center items-center gap-4">
+          <Button @click="onLogout">Log out</Button>
         </div>
       </div>
     </header>

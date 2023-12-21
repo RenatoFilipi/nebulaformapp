@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     "@nuxtjs/supabase",
     "@nuxt/image",
     "@vueuse/nuxt",
+    "radix-vue/nuxt",
   ],
   shadcn: {
     /**
