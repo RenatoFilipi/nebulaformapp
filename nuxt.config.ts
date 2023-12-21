@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     "shadcn-nuxt",
     ["@nuxtjs/google-fonts", { families: { Inter: [100, 200, 300, 400, 500, 600, 700, 800, 900] } }],
     "@nuxtjs/supabase",
+    "@nuxt/image",
   ],
   shadcn: {
     /**
@@ -27,7 +28,7 @@ export default defineNuxtConfig({
   supabase: {
     redirectOptions: {
       login: "/login",
-      callback: "confirm",
+      callback: "/confirm",
       exclude: ["/"],
     },
   },
