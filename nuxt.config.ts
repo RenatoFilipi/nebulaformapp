@@ -8,7 +8,6 @@ export default defineNuxtConfig({
     "@nuxtjs/supabase",
     "@nuxt/image",
     "@vueuse/nuxt",
-    "radix-vue/nuxt",
   ],
   shadcn: {
     /**
@@ -31,7 +30,7 @@ export default defineNuxtConfig({
     redirectOptions: {
       login: "/login",
       callback: "/confirm",
-      exclude: ["/"],
+      exclude: ["/", "/signup"],
     },
   },
   image: {

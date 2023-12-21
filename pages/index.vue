@@ -25,7 +25,7 @@ definePageMeta({
           <NuxtLink to="/login">Log in</NuxtLink>
         </Button>
         <Button as-child variant="default">
-          <NuxtLink to="/login"><Rocket class="mr-2 h-4 w-4" />Get started for free</NuxtLink>
+          <NuxtLink to="/signup"><Rocket class="mr-2 h-4 w-4" />Get started for free</NuxtLink>
         </Button>
       </div>
     </nav>
@@ -35,7 +35,7 @@ definePageMeta({
         <h2 class="text-lg font-medium text-neutral-500 mb-10">Make Data-Driven Decisions with Confidence.</h2>
         <Button asChild variant="default">
           <NuxtLink v-if="user" to="/confirm">Dashboard</NuxtLink>
-          <NuxtLink v-else to="/login">
+          <NuxtLink v-else to="/signup">
             <Rocket class="mr-2 h-4 w-4" />
             Get Started for free
           </NuxtLink>

@@ -28,7 +28,7 @@ const onLogout = async () => {
           </NuxtLink>
         </div>
         <div class="flex justify-center items-center gap-4">
-          <Button @click="onLogout">Log out</Button>
+          <Button variant="outline" size="sm" @click="onLogout">Log out</Button>
         </div>
       </div>
     </header>
