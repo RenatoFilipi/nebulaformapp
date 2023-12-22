@@ -50,7 +50,7 @@ const onSubmit = form.handleSubmit(async (values) => {
   try {
     isLoading.value = true;
     const { error } = await supabase.auth.resetPasswordForEmail(values.email, {
-      redirectTo: "http://localhost:3000/update-password",
+      redirectTo: "http://localhost:3000/reset-password",
     });
     if (error) throw new Error(error.message);
     email.value = values.email;
@@ -72,7 +72,7 @@ const onResendResetPassword = async () => {
   try {
     isLoading.value = true;
     const { error } = await supabase.auth.resetPasswordForEmail(email.value, {
-      redirectTo: "http://localhost:3000/update-password",
+      redirectTo: "http://localhost:3000/reset-password",
     });
     if (error) throw new Error(error.message);
     toast({

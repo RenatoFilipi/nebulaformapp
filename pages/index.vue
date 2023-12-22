@@ -32,7 +32,7 @@ definePageMeta({
         <h1 class="text-5xl font-extrabold mb-2">Empower Your Business with Insightful Forms</h1>
         <h2 class="text-lg font-medium text-neutral-500 mb-10">Make Data-Driven Decisions with Confidence.</h2>
         <Button asChild variant="default">
-          <NuxtLink v-if="user" to="/confirm">Dashboard</NuxtLink>
+          <NuxtLink v-if="user" to="/confirm"> <Rocket class="mr-2 h-4 w-4" /> Get Started for free </NuxtLink>
           <NuxtLink v-else to="/signup">
             <Rocket class="mr-2 h-4 w-4" />
             Get Started for free
