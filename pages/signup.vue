@@ -15,7 +15,7 @@ const user = useSupabaseUser();
 const { toast } = useToast();
 
 useHead({
-  title: "Signup - NEbulaform",
+  title: "Signup - Nbulaform",
 });
 
 definePageMeta({
@@ -105,7 +105,7 @@ const onResendEmail = async () => {
         <NuxtLink to="/"><NuxtImg src="/brand/logodark.svg" width="40"></NuxtImg></NuxtLink>
         <h1 class="font-bold text-2xl">Create your account</h1>
       </div>
-      <div class="flex flex-col justify-center items-center p-6 w-[400px]">
+      <div class="flex flex-col justify-center items-center p-6 min-w-[400px]">
         <form v-if="stage === 'stageSignUpForm'" @submit="onSubmit" class="flex flex-col gap-4 w-full">
           <FormField v-slot="{ componentField }" name="email">
             <FormItem>
