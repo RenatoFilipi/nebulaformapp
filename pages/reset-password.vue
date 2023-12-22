@@ -42,7 +42,7 @@ const onSubmit = form.handleSubmit(async (values) => {
     if (error) throw new Error(error.message);
     stage.value = "stageIsUpdated";
     toast({
-      description: "password update succefully.",
+      description: "password update succefully",
     });
   } catch (err: any) {
     toast({

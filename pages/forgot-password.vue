@@ -56,7 +56,7 @@ const onSubmit = form.handleSubmit(async (values) => {
     email.value = values.email;
     stage.value = "stageIsRequested";
     toast({
-      description: "reset password request succefully.",
+      description: "reset password request succefully",
     });
   } catch (err: any) {
     toast({
@@ -76,7 +76,7 @@ const onResendResetPassword = async () => {
     });
     if (error) throw new Error(error.message);
     toast({
-      description: "reset password request succefully.",
+      description: "reset password request succefully",
     });
   } catch (err: any) {
     toast({
