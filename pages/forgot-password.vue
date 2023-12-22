@@ -8,6 +8,7 @@ import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
 import { Loader2 } from "lucide-vue-next";
+import { mailMasker } from "~/lib/utils";
 
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
@@ -31,7 +32,9 @@ watch(
   { immediate: true }
 );
 
+const stage = ref<forgotPasswordStageType>("stageIsOnRequestForm");
 const isLoading = ref(false);
+const email = ref("");
 
 const formSchema = toTypedSchema(
   z.object({
@@ -46,7 +49,15 @@ const form = useForm({
 const onSubmit = form.handleSubmit(async (values) => {
   try {
     isLoading.value = true;
-    console.log(values);
+    const { error } = await supabase.auth.resetPasswordForEmail(values.email, {
+      redirectTo: "http://localhost:3000/update-password",
+    });
+    if (error) throw new Error(error.message);
+    email.value = values.email;
+    stage.value = "stageIsRequested";
+    toast({
+      description: "reset password request succefully.",
+    });
   } catch (err: any) {
     toast({
       variant: "destructive",
@@ -57,7 +68,25 @@ const onSubmit = form.handleSubmit(async (values) => {
   }
 });
 
-const stage = ref<forgotPasswordStageType>("stageIsOnRequestForm");
+const onResendResetPassword = async () => {
+  try {
+    isLoading.value = true;
+    const { error } = await supabase.auth.resetPasswordForEmail(email.value, {
+      redirectTo: "http://localhost:3000/update-password",
+    });
+    if (error) throw new Error(error.message);
+    toast({
+      description: "reset password request succefully.",
+    });
+  } catch (err: any) {
+    toast({
+      variant: "destructive",
+      description: err.message,
+    });
+  } finally {
+    isLoading.value = false;
+  }
+};
 </script>
 
 <template>
@@ -67,8 +96,8 @@ const stage = ref<forgotPasswordStageType>("stageIsOnRequestForm");
         <NuxtLink to="/"><NuxtImg src="/brand/logodark.svg" width="40"></NuxtImg></NuxtLink>
         <h1 class="font-bold text-2xl">Forgot password</h1>
       </div>
-      <div class="flex flex-col justify-center items-center p-6 w-[400px]">
-        <form @submit="onSubmit" class="flex flex-col gap-4 w-full">
+      <div class="flex flex-col justify-center items-center p-6 min-w-[400px]">
+        <form @submit="onSubmit" v-if="stage === 'stageIsOnRequestForm'" class="flex flex-col gap-4 w-full">
           <FormField v-slot="{ componentField }" name="email">
             <FormItem>
               <FormLabel>Email</FormLabel>
@@ -90,6 +119,21 @@ const stage = ref<forgotPasswordStageType>("stageIsOnRequestForm");
             >
           </div>
         </form>
+        <div v-if="stage === 'stageIsRequested'" class="flex flex-col justify-center items-center gap-4 w-full">
+          <span class="font-bold text-lg">Check your Email</span>
+          <div class="flex flex-col justify-center items-center">
+            <span class="text-sm">We have sent a reset password email to {{ mailMasker(email) }}.</span>
+            <span class="text-sm">Click the link in the email to update your password.</span>
+          </div>
+          <div>
+            <Button type="button" @click="onResendResetPassword">
+              <div class="flex justify-center items-center" v-if="isLoading">
+                <Loader2 class="animate-spin mr-2 w-4 h-4" />Resending
+              </div>
+              <div v-else>Resend email</div></Button
+            >
+          </div>
+        </div>
       </div>
     </div>
   </div>
