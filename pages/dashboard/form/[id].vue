@@ -1,5 +1,13 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+useHead({
+  title: "Form - Nebulaform",
+});
+
+definePageMeta({
+  layout: "application",
+});
+</script>
 
 <template>
-  <div>Form Page</div>
+  <div class="flex justify-center items-center h-screen">Form Page</div>
 </template>

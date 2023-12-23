@@ -26,6 +26,9 @@ const onLogout = async () => {
           <NuxtLink to="/dashboard">
             <NuxtImg src="/images/brand/logodark.svg" width="35" />
           </NuxtLink>
+          <nav class="flex justify-center items-center gap-6">
+            <NuxtLink to="/dashboard" class="text-zinc-500 hover:text-black">Dashboard</NuxtLink>
+          </nav>
         </div>
         <div class="flex justify-center items-center gap-4">
           <Button variant="outline" size="sm" @click="onLogout">Log out</Button>

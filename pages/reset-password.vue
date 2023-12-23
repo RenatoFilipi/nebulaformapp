@@ -73,7 +73,7 @@ const onSubmit = form.handleSubmit(async (values) => {
               <FormMessage />
             </FormItem>
           </FormField>
-          <Button class="w-full" type="submit">
+          <Button class="w-full" type="submit" :disabled="isLoading">
             <div class="flex justify-center items-center" v-if="isLoading">
               <Loader2 class="animate-spin mr-2 w-4 h-4" />Updating
             </div>

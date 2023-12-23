@@ -107,7 +107,7 @@ const onResendResetPassword = async () => {
               <FormMessage />
             </FormItem>
           </FormField>
-          <Button class="w-full" type="submit">
+          <Button class="w-full" type="submit" :disabled="isLoading">
             <div class="flex justify-center items-center" v-if="isLoading">
               <Loader2 class="animate-spin mr-2 w-4 h-4" />Sending email
             </div>
@@ -126,7 +126,7 @@ const onResendResetPassword = async () => {
             <span class="text-sm">Click the link in the email to update your password.</span>
           </div>
           <div>
-            <Button type="button" @click="onResendResetPassword">
+            <Button type="button" @click="onResendResetPassword" :disabled="isLoading">
               <div class="flex justify-center items-center" v-if="isLoading">
                 <Loader2 class="animate-spin mr-2 w-4 h-4" />Resending
               </div>

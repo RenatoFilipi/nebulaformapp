@@ -125,7 +125,7 @@ const onResendEmail = async () => {
               <FormMessage />
             </FormItem>
           </FormField>
-          <Button class="w-full" type="submit">
+          <Button class="w-full" type="submit" :disabled="isLoading">
             <div class="flex justify-center items-center" v-if="isLoading">
               <Loader2 class="animate-spin mr-2 w-4 h-4" />Creating Account
             </div>
@@ -145,7 +145,7 @@ const onResendEmail = async () => {
             <span class="text-sm">Click the link in the email to verify your account.</span>
           </div>
           <div class="flex w-full mt-4">
-            <Button class="w-full" type="button" @click="onResendEmail">
+            <Button class="w-full" type="button" @click="onResendEmail" :disabled="isLoading">
               <div class="flex justify-center items-center" v-if="isLoading">
                 <Loader2 class="animate-spin mr-2 w-4 h-4" />Resending Email
               </div>
