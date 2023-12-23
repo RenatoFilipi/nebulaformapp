@@ -14,7 +14,9 @@ definePageMeta({
 <template>
   <div class="">
     <nav class="fixed w-screen flex justify-between items-center px-10 py-5 bg-white">
-      <NuxtLink to="/" class="flex justify-center items-center"><NuxtImg src="/brand/logotextdark.svg" /></NuxtLink>
+      <NuxtLink to="/" class="flex justify-center items-center"
+        ><NuxtImg src="/images/brand/logotextdark.svg"
+      /></NuxtLink>
       <div v-if="user" class="flex justify-center items-center">
         <Button as-child><NuxtLink to="/confirm">Dashboard</NuxtLink></Button>
       </div>

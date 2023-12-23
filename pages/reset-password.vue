@@ -59,7 +59,7 @@ const onSubmit = form.handleSubmit(async (values) => {
   <div class="flex justify-center items-center h-screen">
     <div class="flex justify-center items-center flex-col gap-4 p-4">
       <div class="flex flex-col justify-center items-center gap-4">
-        <NuxtLink to="/"><NuxtImg src="/brand/logodark.svg" width="40"></NuxtImg></NuxtLink>
+        <NuxtLink to="/"><NuxtImg src="/images/brand/logodark.svg" width="40"></NuxtImg></NuxtLink>
         <h1 class="font-bold text-2xl">Reset password</h1>
       </div>
       <div class="flex flex-col justify-center items-center p-6 min-w-[400px]">

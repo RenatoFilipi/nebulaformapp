@@ -24,7 +24,7 @@ const onLogout = async () => {
       <div class="flex justify-between items-center w-full px-6 h-16">
         <div class="flex justify-center items-center gap-16">
           <NuxtLink to="/dashboard">
-            <NuxtImg src="/brand/logodark.svg" width="35" />
+            <NuxtImg src="/images/brand/logodark.svg" width="35" />
           </NuxtLink>
         </div>
         <div class="flex justify-center items-center gap-4">
