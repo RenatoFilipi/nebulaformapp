@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { Database } from "~/lib/database.types";
+import { LogOut } from "lucide-vue-next";
+
 const user = useSupabaseUser();
 const supabase = useSupabaseClient<Database>();
 
@@ -31,7 +33,7 @@ const onLogout = async () => {
           </nav>
         </div>
         <div class="flex justify-center items-center gap-4">
-          <Button variant="outline" size="sm" @click="onLogout">Log out</Button>
+          <Button variant="outline" size="sm" @click="onLogout"><LogOut class="mr-2 w-4 h-4" />Log out</Button>
         </div>
       </div>
     </header>

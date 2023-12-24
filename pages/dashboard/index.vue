@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { Database } from "~/lib/database.types";
 import type { statusType } from "~/lib/utils.type";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2 } from "lucide-vue-next";
+import { Card } from "@/components/ui/card";
+import { Loader2, Box } from "lucide-vue-next";
 import type { SBformsType } from "~/lib/utils.type";
 
 const supabase = useSupabaseClient<Database>();
@@ -16,6 +16,16 @@ definePageMeta({
   layout: "application",
 });
 
+watch(
+  user,
+  () => {
+    if (!user.value) {
+      return navigateTo("/login");
+    }
+  },
+  { immediate: true }
+);
+
 const status = ref<statusType>("isLoading");
 const forms = ref<SBformsType[]>([]);
 
@@ -26,10 +36,6 @@ const { data } = await useAsyncData("forms", async () => {
     .from("forms")
     .select("*")
     .eq("owner_id", user.value?.id as string);
-
-  if (error) {
-    return { data: null, error };
-  }
 
   return { data, error };
 });
@@ -55,11 +61,14 @@ if (data.value !== null) {
           <div><ApplicationSharedCreateFormButton /></div>
         </div>
         <div v-if="status === 'isLoading'" class="flex justify-center items-center py-20">
-          <Loader2 className="animate-spin w-4 h-4" />
+          <div class="animate-spin">
+            <Loader2 className="w-4 h-4" />
+          </div>
         </div>
         <Card v-if="status === 'isIdle' && forms.length <= 0" class="flex justify-center items-center">
           <div class="flex justify-center items-center flex-col p-40">
             <div class="flex flex-col items-center justify-center">
+              <Box class="mb-2 h-6 w-6" />
               <span class="mb-2">No form to show</span>
               <span class="text-sm text-zinc-500">Create a form to get started.</span>
             </div>
@@ -69,7 +78,10 @@ if (data.value !== null) {
           <li v-for="(form, index) in forms" :key="index">
             <NuxtLink :to="'/dashboard/form/' + form.id">
               <Card class="p-6 h-40 flex flex-col justify-between hover:border-primary">
-                <span class="text-lg font-bold">{{ form.title }}</span>
+                <div class="flex justify-between items-center">
+                  <span class="text-lg font-bold">{{ form.title }}</span>
+                  <Box />
+                </div>
                 <div>
                   <span class="text-zinc-500">{{ form.responses }} responses</span>
                 </div>

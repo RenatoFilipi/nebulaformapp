@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "~/components/ui/input";
-import { Loader2 } from "lucide-vue-next";
+import { Loader2, Plus } from "lucide-vue-next";
 import { useToast } from "@/components/ui/toast/use-toast";
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
@@ -58,7 +58,9 @@ const onSubmit = form.handleSubmit(async (values) => {
 
 <template>
   <Dialog>
-    <DialogTrigger as-child><Button>Create Form</Button></DialogTrigger>
+    <DialogTrigger as-child
+      ><Button><Plus class="mr-2 w-4 h-4" />Create Form</Button></DialogTrigger
+    >
     <DialogContent>
       <form @submit="onSubmit">
         <DialogHeader>
