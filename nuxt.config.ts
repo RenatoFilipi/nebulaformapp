@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "@vueuse/nuxt",
     "@nuxtjs/i18n",
+    "@pinia/nuxt",
   ],
   shadcn: {
     /**
