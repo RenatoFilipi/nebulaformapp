@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { Box, Copy, PenSquare } from "lucide-vue-next";
+import { Box, Copy, PenSquare, Share } from "lucide-vue-next";
 import type { Database } from "~/lib/database.types";
+import { parseFormatDistanceDate } from "~/lib/utils";
 import type { SBformsType, statusType } from "~/lib/utils.type";
 
 const supabase = useSupabaseClient<Database>();
@@ -26,6 +27,7 @@ watch(
 );
 
 const status = ref<statusType>("isLoading");
+const statusResponses = ref<statusType>("isLoading");
 const form = ref<SBformsType>({ created_at: "", id: "", owner_id: "", responses: 0, title: "", updated_at: "" });
 
 const { data } = await useAsyncData("form", async () => {
@@ -49,12 +51,16 @@ if (data.value !== null) {
 } else {
   status.value = "isRejected";
 }
+
+console.log(form.value);
+
+console.log();
 </script>
 
 <template>
   <div>
     <div class="flex flex-col items-center">
-      <div class="flex flex-1 w-full flex-col py-40 px-80 gap-12">
+      <div class="flex flex-1 w-full flex-col py-40 px-80 gap-2">
         <div class="flex justify-between items-center">
           <div class="flex justify-center items-center gap-6">
             <div class="flex items-center justify-center gap-2">
@@ -64,11 +70,20 @@ if (data.value !== null) {
             <Badge variant="outline">{{ form.responses }} responses</Badge>
           </div>
           <div class="flex justify-center items-center gap-4">
-            <Button variant="outline"><Copy class="mr-2 w-4 h-4" />Copy Link</Button>
-            <Button as-child
-              ><NuxtLink :to="'/dashboard/editor/' + form.id"><PenSquare class="mr-2 w-4 h-4" />Edit Form</NuxtLink>
-            </Button>
+            <Button variant="outline">Share</Button>
+            <Button as-child><NuxtLink :to="'/dashboard/editor/' + form.id">Edit</NuxtLink> </Button>
           </div>
+        </div>
+        <div>
+          <span class="text-zinc-500 text-sm">Last form update was {{ parseFormatDistanceDate(form.updated_at) }}</span>
+        </div>
+        <div class="mt-10">
+          <Card class="flex flex-col">
+            <div class="border-b p-3"><span class="text-zinc-500">Latest form activity</span></div>
+            <div v-if="statusResponses === 'isLoading'" class="flex justify-center items-center p-44">
+              <span class="text-zinc-500 text-sm">No form responses to show.</span>
+            </div>
+          </Card>
         </div>
       </div>
     </div>
