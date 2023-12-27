@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import type { Database } from "~/lib/database.types";
-import { LogOut } from "lucide-vue-next";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const user = useSupabaseUser();
 const supabase = useSupabaseClient<Database>();
 
-const avatarUser = computed(() => {
-  const email = user.value?.email as string;
-  return email.slice(0, 2).toUpperCase();
-});
+const avatarMail = ref("");
 
 const onLogout = async () => {
   const { error } = await supabase.auth.signOut();
@@ -18,6 +20,9 @@ const onLogout = async () => {
   }
   return navigateTo("/login");
 };
+
+const email = user.value?.email as string;
+avatarMail.value = email.slice(0, 2).toUpperCase();
 </script>
 
 <template>
@@ -33,7 +38,16 @@ const onLogout = async () => {
           </nav>
         </div>
         <div class="flex justify-center items-center gap-4">
-          <Button variant="outline" size="sm" @click="onLogout"><LogOut class="mr-2 w-4 h-4" />Log out</Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger as-child
+              ><Avatar class="cursor-pointer"
+                ><AvatarFallback>{{ avatarMail }}</AvatarFallback></Avatar
+              ></DropdownMenuTrigger
+            >
+            <DropdownMenuContent>
+              <DropdownMenuItem @click="onLogout">Log out</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </header>
