@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Box, Copy, PenSquare, Share } from "lucide-vue-next";
+import { Box } from "lucide-vue-next";
 import type { Database } from "~/lib/database.types";
 import { parseFormatDistanceDate } from "~/lib/utils";
-import type { SBformsType, statusType } from "~/lib/utils.type";
+import type { SBformsType, statusType } from "~/lib/utils.types";
 
 const supabase = useSupabaseClient<Database>();
 const user = useSupabaseUser();
@@ -51,10 +51,6 @@ if (data.value !== null) {
 } else {
   status.value = "isRejected";
 }
-
-console.log(form.value);
-
-console.log();
 </script>
 
 <template>

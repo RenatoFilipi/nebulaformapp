@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { Database } from "~/lib/database.types";
-import type { statusType } from "~/lib/utils.type";
 import { Card } from "@/components/ui/card";
 import { Loader2, Box } from "lucide-vue-next";
-import type { SBformsType } from "~/lib/utils.type";
+import type { SBformsType, statusType } from "~/lib/utils.types";
 
 const supabase = useSupabaseClient<Database>();
 const user = useSupabaseUser();

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { updatePasswordStageType } from "~/lib/utils.type";
+import type { updatePasswordStageType } from "~/lib/utils.types";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";

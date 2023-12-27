@@ -7,7 +7,7 @@ import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
 import { Loader2 } from "lucide-vue-next";
-import type { signupStageType } from "~/lib/utils.type";
+import type { signupStageType } from "~/lib/utils.types";
 import { mailMasker } from "~/lib/utils";
 
 const supabase = useSupabaseClient();
