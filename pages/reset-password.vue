@@ -8,10 +8,8 @@ import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
 import { Loader2 } from "lucide-vue-next";
-import { mailMasker } from "~/lib/utils";
 
 const supabase = useSupabaseClient();
-const user = useSupabaseUser();
 const { toast } = useToast();
 
 useHead({

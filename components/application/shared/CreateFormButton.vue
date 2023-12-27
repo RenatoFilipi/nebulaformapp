@@ -37,13 +37,10 @@ const onSubmit = form.handleSubmit(async (values) => {
     isLoading.value = true;
     const { data, error } = await supabase
       .from("forms")
-      .insert([{ title: values.title, owner_id: user.value?.id }])
+      .insert([{ title: values.title, owner_id: user.value?.id as string }])
       .select()
       .single();
     if (error) throw new Error(error.message);
-    toast({
-      description: "Form created",
-    });
     navigateTo("/dashboard/form/" + data.id);
   } catch (err: any) {
     toast({

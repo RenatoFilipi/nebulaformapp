@@ -12,24 +12,33 @@ export interface Database {
       forms: {
         Row: {
           created_at: string
+          description: string | null
           id: string
-          owner_id: string | null
+          mode: string
+          owner_id: string
+          public_id: string
           responses: number
           title: string | null
           updated_at: string
         }
         Insert: {
           created_at?: string
+          description?: string | null
           id?: string
-          owner_id?: string | null
+          mode?: string
+          owner_id: string
+          public_id?: string
           responses?: number
           title?: string | null
           updated_at?: string
         }
         Update: {
           created_at?: string
+          description?: string | null
           id?: string
-          owner_id?: string | null
+          mode?: string
+          owner_id?: string
+          public_id?: string
           responses?: number
           title?: string | null
           updated_at?: string

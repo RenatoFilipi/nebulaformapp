@@ -28,7 +28,17 @@ watch(
 
 const status = ref<statusType>("isLoading");
 const statusResponses = ref<statusType>("isLoading");
-const form = ref<SBformsType>({ created_at: "", id: "", owner_id: "", responses: 0, title: "", updated_at: "" });
+const form = ref<SBformsType>({
+  created_at: "",
+  id: "",
+  owner_id: "",
+  responses: 0,
+  title: "",
+  updated_at: "",
+  description: "",
+  public_id: "",
+  mode: "",
+});
 
 const { data } = await useAsyncData("form", async () => {
   status.value = "isLoading";
