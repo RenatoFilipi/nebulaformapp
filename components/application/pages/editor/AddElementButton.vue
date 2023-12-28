@@ -13,7 +13,7 @@ import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
 import { RadioGroup } from "~/components/ui/radio-group";
-import { CheckSquare2, Text, Star } from "lucide-vue-next";
+import { CheckSquare2, Text, Star, Plus } from "lucide-vue-next";
 import { newUuid } from "~/lib/utils";
 import { useEditorStore } from "~/stores/editor";
 import type { multipleChoiceProps, openEndedProps, likertScaleProps, elementProps } from "~/lib/utils.interfaces";
@@ -94,7 +94,7 @@ const onSubmit = form.handleSubmit((values) => {
 <template>
   <Dialog v-model:open="openDialog">
     <DialogTrigger as-child>
-      <Button>Add Element</Button>
+      <Button><Plus class="mr-2 w-4 h-4" />Add Element</Button>
     </DialogTrigger>
     <DialogContent>
       <form @submit="onSubmit">

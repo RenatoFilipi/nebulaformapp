@@ -73,7 +73,7 @@ if (data.value !== null) {
             </div>
           </div>
         </Card>
-        <ul v-if="status === 'isIdle' && forms.length > 0" class="grid grid-cols-3 gap-6">
+        <ul v-if="status === 'isIdle' && forms.length >= 1" class="grid grid-cols-3 gap-6">
           <li v-for="(form, index) in forms" :key="index">
             <NuxtLink :to="'/dashboard/form/' + form.id">
               <Card class="p-6 h-40 flex flex-col justify-between hover:border-primary">
@@ -89,7 +89,7 @@ if (data.value !== null) {
           </li>
         </ul>
         <div v-if="status === 'isRejected'" class="flex flex-col justify-center items-center py-20 gap-6">
-          <span>Something went wrong, please try again.</span>
+          <span class="text-zinc-500 text-sm">Something went wrong, please try again.</span>
         </div>
       </div>
     </div>
