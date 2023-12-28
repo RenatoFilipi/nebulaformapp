@@ -22,3 +22,5 @@ export const editorElementOptions: editorElementOptionProps[] = [
     type: "likertScale",
   },
 ];
+
+export const editorElementOptionsEnum = ["none", "multipleChoice", "openEnded", "likertScale"] as const;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Box } from "lucide-vue-next";
+import { Box, Pencil, Share, Eye } from "lucide-vue-next";
 import type { Database } from "~/lib/database.types";
 import { parseFormatDistanceDate } from "~/lib/utils";
 import type { SBformsType, statusType } from "~/lib/utils.types";
@@ -76,8 +76,11 @@ if (data.value !== null) {
             <Badge variant="outline">{{ form.responses }} responses</Badge>
           </div>
           <div class="flex justify-center items-center gap-4">
-            <Button variant="outline">Share</Button>
-            <Button as-child><NuxtLink :to="'/dashboard/editor/' + form.id">Edit</NuxtLink> </Button>
+            <Button variant="outline"><Eye class="mr-2 w-4 h-4" />Preview</Button>
+            <Button variant="outline"><Share class="mr-2 w-4 h-4" />Share</Button>
+            <Button as-child
+              ><NuxtLink :to="'/dashboard/editor/' + form.id"><Pencil class="mr-2 w-4 h-4" />Edit</NuxtLink>
+            </Button>
           </div>
         </div>
         <div>
