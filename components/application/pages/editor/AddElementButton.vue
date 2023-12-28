@@ -14,12 +14,16 @@ import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
 import { RadioGroup } from "~/components/ui/radio-group";
 import { CheckSquare2, Text, Star } from "lucide-vue-next";
+import { newUuid } from "~/lib/utils";
+import { useEditorStore } from "~/stores/editor";
+import type { multipleChoiceProps, openEndedProps, likertScaleProps, elementProps } from "~/lib/utils.interfaces";
 
+const editorStore = useEditorStore();
 const openDialog = ref(false);
 
 const formSchema = toTypedSchema(
   z.object({
-    type: z.enum(["none", "multipleChoice", "openEnded", "likertScale"], {
+    type: z.enum(editorElementOptionsEnum, {
       required_error: "you need to select a element type.",
     }),
   })
@@ -30,7 +34,59 @@ const form = useForm({
 });
 
 const onSubmit = form.handleSubmit((values) => {
-  console.log(values);
+  switch (values.type) {
+    case "multipleChoice":
+      {
+        const templateElementProps: multipleChoiceProps = {
+          question: "",
+          description: "",
+          options: [{ label: "", value: "" }],
+        };
+
+        const templateElement: elementProps = {
+          id: newUuid(),
+          name: "multiple choice element",
+          type: "multipleChoice",
+          props: templateElementProps,
+        };
+        editorStore.addElement(templateElement);
+      }
+      break;
+    case "openEnded":
+      {
+        const templateElementProps: openEndedProps = {
+          question: "",
+          description: "",
+        };
+
+        const templateElement: elementProps = {
+          id: newUuid(),
+          name: "open ended element",
+          type: "openEnded",
+          props: templateElementProps,
+        };
+        editorStore.addElement(templateElement);
+      }
+      break;
+    case "likertScale":
+      {
+        const templateElementProps: likertScaleProps = {
+          question: "",
+          description: "",
+          lowestLabel: "",
+          highestLabel: "",
+        };
+
+        const templateElement: elementProps = {
+          id: newUuid(),
+          name: "likert scale element",
+          type: "likertScale",
+          props: templateElementProps,
+        };
+        editorStore.addElement(templateElement);
+      }
+      break;
+  }
   openDialog.value = false;
 });
 </script>

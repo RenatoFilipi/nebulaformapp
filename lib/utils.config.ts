@@ -23,4 +23,4 @@ export const editorElementOptions: editorElementOptionProps[] = [
   },
 ];
 
-export const editorElementOptionsEnum = ["none", "multipleChoice", "openEnded", "likertScale"] as const;
+export const editorElementOptionsEnum = ["multipleChoice", "openEnded", "likertScale"] as const;
