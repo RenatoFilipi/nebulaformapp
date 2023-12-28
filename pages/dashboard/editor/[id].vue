@@ -35,6 +35,10 @@ watch(formName, (value) => {
   editorStore.setFormName(value);
 });
 
+onBeforeUnmount(() => {
+  editorStore.reset();
+});
+
 editorStore.setFormId(route.params.id as string);
 </script>
 

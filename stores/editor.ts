@@ -29,5 +29,10 @@ export const useEditorStore = defineStore("editor", {
     updateElement(payload: elementProps) {
       this.elements = this.elements.map((element) => (element.id === payload.id ? payload : element));
     },
+    reset() {
+      this.id = "";
+      this.name = "";
+      this.elements = [];
+    },
   },
 });
