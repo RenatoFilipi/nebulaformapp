@@ -14,8 +14,8 @@ import type { elementProps, multipleChoiceProps } from "~/lib/utils.interfaces";
 import { Trash } from "lucide-vue-next";
 import { useEditorStore } from "~/stores/editor";
 import { newUuid } from "~/lib/utils";
-const editorStore = useEditorStore();
 
+const editorStore = useEditorStore();
 const element = defineProps<{
   id: elementProps["id"];
   type: elementProps["type"];
@@ -32,10 +32,13 @@ function handleAddOption() {
 </script>
 
 <template>
-  <Card :key="element.id" class="p-4"
+  <Card :key="element.id" class="p-4 hover:border-primary"
     ><div class="flex flex-col gap-4">
       <div class="flex justify-between items-center">
-        <span>{{ element.props.question }}</span>
+        <div class="flex justify-center items-center gap-4">
+          <Label>Question</Label>
+          <Input v-model="element.props.question" />
+        </div>
         <div class="flex justify-center items-center gap-4">
           <AlertDialog>
             <AlertDialogTrigger as-child>
@@ -58,6 +61,10 @@ function handleAddOption() {
             </AlertDialogContent>
           </AlertDialog>
         </div>
+      </div>
+      <div class="flex justify-center items-center gap-4">
+        <Label>Description</Label>
+        <Input v-model="element.props.description" />
       </div>
       <div class="flex flex-col gap-4">
         <div>
