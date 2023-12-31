@@ -13,6 +13,7 @@ import {
 import type { elementProps, multipleChoiceProps } from "~/lib/utils.interfaces";
 import { Trash } from "lucide-vue-next";
 import { useEditorStore } from "~/stores/editor";
+import { newUuid } from "~/lib/utils";
 const editorStore = useEditorStore();
 
 const element = defineProps<{
@@ -21,18 +22,13 @@ const element = defineProps<{
   props: multipleChoiceProps;
 }>();
 
-const handleChange = (event: Event) => {
-  const target = event.target as HTMLInputElement;
-  const inputText = target.value;
+function handleDeleteOption(optionValue: string) {
+  element.props.options = element.props.options.filter((el) => el.value !== optionValue);
+}
 
-  console.log(inputText);
-
-  const updatedElement: elementProps = {
-    id: element.id,
-    type: element.type,
-    props: element.props,
-  };
-};
+function handleAddOption() {
+  element.props.options.push({ value: newUuid(), label: "" });
+}
 </script>
 
 <template>
@@ -63,18 +59,27 @@ const handleChange = (event: Event) => {
           </AlertDialog>
         </div>
       </div>
-      <div class="">
-        <div
-          v-for="(option, index) in element.props.options"
-          :key="index"
-          class="flex justify-between items-center py-2">
-          <div class="flex items-center gap-4">
-            <Input v-model.trim="option.label" />
-          </div>
-          <div>
-            <Button variant="outline"><Trash class="mr-2 w-4 h-4" />Delete option</Button>
+      <div class="flex flex-col gap-4">
+        <div>
+          <div
+            v-for="(option, index) in element.props.options"
+            :key="index"
+            class="flex justify-between items-center py-2">
+            <div class="flex items-center gap-4">
+              <Label :for="option.value">#{{ index + 1 }}</Label>
+              <Input :id="option.value" v-model="option.label" />
+            </div>
+            <div>
+              <Button
+                variant="outline"
+                @click="handleDeleteOption(option.value)"
+                :disabled="element.props.options.length <= 2"
+                ><Trash class="w-4 h-4"
+              /></Button>
+            </div>
           </div>
         </div>
+        <Button @click="handleAddOption" variant="outline">Add Option</Button>
       </div>
     </div>
   </Card>

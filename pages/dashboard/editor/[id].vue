@@ -31,17 +31,15 @@ watch(
 );
 
 const status = ref<statusType>("isIdle");
-const formName = ref("");
 
-watch(formName, (value) => {
-  editorStore.setFormName(value);
+onBeforeMount(() => {
+  editorStore.reset();
+  editorStore.setFormId(route.params.id as string);
 });
 
 onBeforeUnmount(() => {
   editorStore.reset();
 });
-
-editorStore.setFormId(route.params.id as string);
 </script>
 
 <template>
@@ -49,7 +47,7 @@ editorStore.setFormId(route.params.id as string);
     <div class="flex flex-col items-center">
       <div class="flex flex-1 w-full flex-col py-40 px-80 gap-12">
         <div class="flex justify-between items-center">
-          <div><Input class="min-w-96" placeholder="Form Name" v-model.trim="formName" /></div>
+          <div><Input class="min-w-96" placeholder="Form Name" v-model.trim="editorStore.name" /></div>
           <ApplicationPagesEditorAddElementButton />
         </div>
         <div v-if="status === 'isLoading'" class="flex justify-center items-center py-20">
