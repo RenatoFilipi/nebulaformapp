@@ -71,19 +71,16 @@ editorStore.setFormId(route.params.id as string);
             <ApplicationPagesEditorMultipleChoice
               v-if="element.type == 'multipleChoice'"
               :id="element.id"
-              :name="element.name"
               type="multipleChoice"
               :props="(element.props as multipleChoiceProps)" />
             <ApplicationPagesEditorOpenEnded
               v-if="element.type == 'openEnded'"
               :id="element.id"
-              :name="element.name"
               type="openEnded"
               :props="(element.props as openEndedProps)" />
             <ApplicationPagesEditorLikertScale
               v-if="element.type == 'likertScale'"
               :id="element.id"
-              :name="element.name"
               type="likertScale"
               :props="(element.props as likertScaleProps)" />
           </div>

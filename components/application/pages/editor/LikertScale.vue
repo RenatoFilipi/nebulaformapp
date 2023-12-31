@@ -2,7 +2,6 @@
 import type { elementProps, likertScaleProps } from "~/lib/utils.interfaces";
 const props = defineProps<{
   id: elementProps["id"];
-  name: elementProps["name"];
   type: elementProps["type"];
   props: likertScaleProps;
 }>();
@@ -10,7 +9,6 @@ const props = defineProps<{
 
 <template>
   <div class="p-4 border flex flex-col gap-2">
-    <span>{{ props.id }}</span
-    ><span>{{ props.name }}</span>
+    <span>{{ props.id }}</span>
   </div>
 </template>

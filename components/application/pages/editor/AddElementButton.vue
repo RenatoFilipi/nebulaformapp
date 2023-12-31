@@ -38,14 +38,13 @@ const onSubmit = form.handleSubmit((values) => {
     case "multipleChoice":
       {
         const templateElementProps: multipleChoiceProps = {
-          question: "",
+          question: "Multiple Choice Element",
           description: "",
-          options: [{ label: "", value: "" }],
+          options: [{ label: "Option Label", value: newUuid() }],
         };
 
         const templateElement: elementProps = {
           id: newUuid(),
-          name: "multiple choice element",
           type: "multipleChoice",
           props: templateElementProps,
         };
@@ -55,13 +54,12 @@ const onSubmit = form.handleSubmit((values) => {
     case "openEnded":
       {
         const templateElementProps: openEndedProps = {
-          question: "",
+          question: "Open Ended Element",
           description: "",
         };
 
         const templateElement: elementProps = {
           id: newUuid(),
-          name: "open ended element",
           type: "openEnded",
           props: templateElementProps,
         };
@@ -71,7 +69,7 @@ const onSubmit = form.handleSubmit((values) => {
     case "likertScale":
       {
         const templateElementProps: likertScaleProps = {
-          question: "",
+          question: "Likert Scale Element",
           description: "",
           lowestLabel: "",
           highestLabel: "",
@@ -79,7 +77,6 @@ const onSubmit = form.handleSubmit((values) => {
 
         const templateElement: elementProps = {
           id: newUuid(),
-          name: "likert scale element",
           type: "likertScale",
           props: templateElementProps,
         };

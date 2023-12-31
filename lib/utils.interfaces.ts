@@ -7,7 +7,6 @@ export interface editorFormProps {
 }
 export interface elementProps {
   id: string;
-  name: string;
   type: elementQuestionType;
   props: multipleChoiceProps | openEndedProps | likertScaleProps;
 }
