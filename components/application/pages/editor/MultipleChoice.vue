@@ -22,13 +22,13 @@ const element = defineProps<{
   props: multipleChoiceProps;
 }>();
 
-function handleDeleteOption(optionValue: string) {
+const handleDeleteOption = (optionValue: string) => {
   element.props.options = element.props.options.filter((el) => el.value !== optionValue);
-}
+};
 
-function handleAddOption() {
+const handleAddOption = () => {
   element.props.options.push({ value: newUuid(), label: "" });
-}
+};
 </script>
 
 <template>
@@ -78,7 +78,7 @@ function handleAddOption() {
             </div>
             <div>
               <Button
-                variant="outline"
+                variant="secondary"
                 @click="handleDeleteOption(option.value)"
                 :disabled="element.props.options.length <= 2"
                 ><Trash class="w-4 h-4"
@@ -86,7 +86,7 @@ function handleAddOption() {
             </div>
           </div>
         </div>
-        <Button @click="handleAddOption" variant="outline">Add Option</Button>
+        <Button @click="handleAddOption" variant="secondary">Add Option</Button>
       </div>
     </div>
   </Card>
