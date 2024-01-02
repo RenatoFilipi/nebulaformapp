@@ -40,7 +40,10 @@ const onSubmit = form.handleSubmit((values) => {
         const templateElementProps: multipleChoiceProps = {
           question: "Multiple Choice Element",
           description: "",
-          options: [{ label: "Option Label", value: newUuid() }],
+          options: [
+            { label: "Option Label", value: newUuid() },
+            { label: "Option Label", value: newUuid() },
+          ],
         };
 
         const templateElement: elementProps = {

@@ -23,7 +23,7 @@ const element = defineProps<{
 </script>
 
 <template>
-  <Card :key="element.id" class="p-4 hover:border-primary"
+  <Card :key="element.id" class="p-4 hover:border-primary border-dashed"
     ><div class="flex flex-col gap-4">
       <div class="flex justify-between items-center">
         <div class="flex justify-center items-center gap-4">

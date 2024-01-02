@@ -88,6 +88,124 @@ export interface Database {
           }
         ]
       }
+      questions: {
+        Row: {
+          created_at: string
+          description: string | null
+          form_id: string
+          id: string
+          owner_id: string
+          question: string | null
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          form_id: string
+          id?: string
+          owner_id: string
+          question?: string | null
+          type?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          form_id?: string
+          id?: string
+          owner_id?: string
+          question?: string | null
+          type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "questions_form_id_fkey"
+            columns: ["form_id"]
+            isOneToOne: false
+            referencedRelation: "forms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "questions_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      questions_likert_scale: {
+        Row: {
+          created_at: string
+          highest_label: string | null
+          id: string
+          lowest_label: string | null
+          question_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          highest_label?: string | null
+          id?: string
+          lowest_label?: string | null
+          question_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          highest_label?: string | null
+          id?: string
+          lowest_label?: string | null
+          question_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "questions_likert_scale_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "questions"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      questions_multiple_choice: {
+        Row: {
+          created_at: string
+          id: string
+          label: string | null
+          question_id: string
+          updated_at: string
+          value: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          label?: string | null
+          question_id: string
+          updated_at?: string
+          value?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          label?: string | null
+          question_id?: string
+          updated_at?: string
+          value?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "questions_multiple_choice_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "questions"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Views: {
       [_ in never]: never

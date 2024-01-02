@@ -6,6 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { LayoutDashboard, Home } from "lucide-vue-next";
 
 const user = useSupabaseUser();
 const supabase = useSupabaseClient<Database>();
@@ -34,7 +35,9 @@ avatarMail.value = email.slice(0, 2).toUpperCase();
             <NuxtImg src="/images/brand/logodark.svg" width="35" />
           </NuxtLink>
           <nav class="flex justify-center items-center gap-6">
-            <Button as-child variant="ghost"><NuxtLink to="/dashboard" class="text-sm">Dashboard</NuxtLink></Button>
+            <Button as-child variant="ghost"
+              ><NuxtLink to="/dashboard" class="text-sm"><Home class="mr-2 w-4 h-4" />Dashboard</NuxtLink></Button
+            >
           </nav>
         </div>
         <div class="flex justify-center items-center gap-4">

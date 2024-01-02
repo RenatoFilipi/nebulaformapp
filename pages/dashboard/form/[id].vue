@@ -84,7 +84,7 @@ if (data.value !== null) {
           </div>
         </div>
         <div>
-          <span class="text-zinc-500 text-sm">Last form update was {{ parseFormatDistanceDate(form.updated_at) }}</span>
+          <span class="text-zinc-500 text-sm">Last update was {{ parseFormatDistanceDate(form.updated_at) }}</span>
         </div>
         <div class="mt-10">
           <Card class="flex flex-col">

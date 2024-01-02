@@ -18,7 +18,7 @@ definePageMeta({
         ><NuxtImg src="/images/brand/logotextdark.svg"
       /></NuxtLink>
       <div v-if="user" class="flex justify-center items-center">
-        <Button as-child><NuxtLink to="/confirm">Dashboard</NuxtLink></Button>
+        <Button variant="default" as-child><NuxtLink to="/confirm">Dashboard</NuxtLink></Button>
       </div>
       <div v-else class="flex justify-center items-center gap-6">
         <Button as-child variant="outline">
