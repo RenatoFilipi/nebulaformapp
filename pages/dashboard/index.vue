@@ -30,12 +30,10 @@ const forms = ref<SBformsType[]>([]);
 
 const { data } = await useAsyncData("forms", async () => {
   status.value = "isLoading";
-
   const { data, error } = await supabase
     .from("forms")
     .select("*")
     .eq("owner_id", user.value?.id as string);
-
   return { data, error };
 });
 

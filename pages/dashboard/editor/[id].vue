@@ -64,12 +64,31 @@ const handleSaveForm = async () => {
     const { data: formData, error: formError } = await supabase
       .from("forms")
       .update({ title: editorStore.formName })
-      .eq("id", "90f43d58-fc3d-4f33-a5c8-4a253cf7c065")
-      .select();
+      .eq("id", editorStore.formId)
+      .select()
+      .single();
 
     if (formError) throw new Error(formError.message);
 
-    navigateTo("/dashboard/form/" + editorStore.formId);
+    for (const el of editorStore.formElements) {
+      const { data: questionData, error: questionError } = await supabase
+        .from("questions")
+        .insert([
+          {
+            form_id: formData.id,
+            owner_id: user.value?.id as string,
+            type: el.type,
+            question: el.props.question,
+            description: el.props.description,
+          },
+        ])
+        .select()
+        .single();
+
+      if (questionError) throw new Error(questionError.message);
+    }
+
+    //navigateTo("/dashboard/form/" + editorStore.formId);
   } catch (err: any) {
     toast({
       variant: "destructive",
@@ -104,7 +123,6 @@ if (data.value !== null) {
 }
 
 editorStore.setFormName(form.value.title as string);
-console.log(form.value);
 </script>
 
 <template>

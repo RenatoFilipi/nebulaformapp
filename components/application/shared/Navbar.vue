@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LayoutDashboard, Home } from "lucide-vue-next";
+import { Home } from "lucide-vue-next";
 
 const user = useSupabaseUser();
 const supabase = useSupabaseClient<Database>();
