@@ -86,7 +86,9 @@ const handleAddOption = () => {
             </div>
           </div>
         </div>
-        <Button @click="handleAddOption" variant="default">Add Option</Button>
+        <Button @click="handleAddOption" variant="default" :disabled="element.props.options.length >= 6"
+          >Add Option</Button
+        >
       </div>
     </div>
   </Card>
