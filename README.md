@@ -1,3 +1,1 @@
-# Nebulaform
-
-Working in progress
+![SVG](public/images/brand/logotextdark.svg)
