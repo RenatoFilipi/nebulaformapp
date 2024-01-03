@@ -5,8 +5,9 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { Home } from "lucide-vue-next";
+import { Home, LogOut } from "lucide-vue-next";
 
 const user = useSupabaseUser();
 const supabase = useSupabaseClient<Database>();
@@ -48,7 +49,9 @@ avatarMail.value = email.slice(0, 2).toUpperCase();
               ></DropdownMenuTrigger
             >
             <DropdownMenuContent>
-              <DropdownMenuItem @click="onLogout">Log out</DropdownMenuItem>
+              <DropdownMenuItem><NuxtLink to="/">Homepage</NuxtLink></DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem @click="onLogout"><LogOut class="mr-2 w-4 h-4" />Log out</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
