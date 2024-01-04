@@ -37,16 +37,24 @@ const { data } = await useAsyncData("forms", async () => {
   return { data, error };
 });
 
-if (data.value !== null) {
-  if (!data.value.error) {
-    if (data.value.data !== null) {
-      forms.value = data.value.data;
-      status.value = "isIdle";
-    }
+const afterFormsFetch = () => {
+  if (data.value === null) {
+    status.value = "isRejected";
+    return;
   }
-} else {
-  status.value = "isRejected";
-}
+  if (data.value.error) {
+    status.value = "isRejected";
+    return;
+  }
+  if (data.value.data === null) {
+    status.value = "isRejected";
+    return;
+  }
+  forms.value = data.value.data;
+  status.value = "isIdle";
+};
+
+afterFormsFetch();
 </script>
 
 <template>
@@ -59,7 +67,7 @@ if (data.value !== null) {
         </div>
         <div v-if="status === 'isLoading'" class="flex justify-center items-center py-20">
           <div class="animate-spin">
-            <Loader2 className="w-4 h-4" />
+            <Loader2 class="w-6 h-6" />
           </div>
         </div>
         <Card v-if="status === 'isIdle' && forms.length <= 0" class="flex justify-center items-center">
@@ -80,7 +88,9 @@ if (data.value !== null) {
                   <Box />
                 </div>
                 <div>
-                  <span class="text-zinc-500">{{ form.responses }} responses</span>
+                  <span class="text-zinc-500"
+                    >{{ form.responses }} {{ form.responses === 1 ? "response" : "responses" }}</span
+                  >
                 </div>
               </Card>
             </NuxtLink>

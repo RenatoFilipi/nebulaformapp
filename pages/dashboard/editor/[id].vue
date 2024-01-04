@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import type { Database } from "~/lib/database.types";
 import type { statusType } from "~/lib/utils.types";
-import { Input } from "@/components/ui/input";
 import { useEditorStore } from "~/stores/editor";
 import { watch } from "vue";
 import type { openEndedProps, multipleChoiceProps, likertScaleProps } from "~/lib/utils.interfaces";
-import { LayoutGrid, Loader2 } from "lucide-vue-next";
+import { LayoutGrid } from "lucide-vue-next";
 import { useToast } from "@/components/ui/toast/use-toast";
 import type { SBformsType } from "~/lib/utils.types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -128,16 +127,17 @@ editorStore.setFormName(form.value.title as string);
 <template>
   <div class="pt-16">
     <div class="mt-4 flex justify-center items-center">
-      <Tabs default-value="account" class="">
+      <Tabs default-value="blocks" class="">
         <div class="flex justify-center items-center gap-4">
           <TabsList>
-            <TabsTrigger value="account">Blocks</TabsTrigger>
-            <TabsTrigger value="password">Settings</TabsTrigger>
+            <TabsTrigger value="blocks">Blocks</TabsTrigger>
+            <TabsTrigger value="preview">Preview</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
           <Button>Publish</Button>
         </div>
         <div class="flex justify-center items-center p-4 mt-10">
-          <TabsContent value="account" class="">
+          <TabsContent value="blocks" class="">
             <!-- NO ELEMENTS -->
             <div
               v-if="status === 'isIdle' && editorStore.formElements.length <= 0"
@@ -172,7 +172,8 @@ editorStore.setFormName(form.value.title as string);
               </div>
               <div class="flex justify-center items-center w-full"><ApplicationPagesEditorAddElementButton /></div></div
           ></TabsContent>
-          <TabsContent value="password" class="">Working in progress</TabsContent>
+          <TabsContent value="preview">Working in progress - Preview</TabsContent>
+          <TabsContent value="settings">Working in progress - Settings</TabsContent>
         </div>
       </Tabs>
     </div>
