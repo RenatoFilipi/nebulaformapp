@@ -78,10 +78,16 @@ afterFormsFetch();
           <li v-for="(form, index) in forms" :key="index">
             <NuxtLink :to="'/dashboard/form/' + form.id">
               <Card class="p-6 h-40 flex flex-col justify-between hover:border-primary">
-                <div class="flex justify-between items-center">
-                  <span class="text-lg font-bold">{{ form.title }}</span>
-                  <Box />
+                <div class="">
+                  <div class="flex justify-between items-center mb-2">
+                    <div class="flex items-center gap-3">
+                      <span class="text-lg font-bold">{{ form.title }}</span>
+                      <Badge variant="outline">{{ form.mode }}</Badge>
+                    </div>
+                    <Box />
+                  </div>
                 </div>
+
                 <div>
                   <span class="text-zinc-500"
                     >{{ form.responses }} {{ form.responses === 1 ? "response" : "responses" }}</span

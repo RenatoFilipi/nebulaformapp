@@ -30,7 +30,7 @@ avatarMail.value = email.slice(0, 2).toUpperCase();
 <template>
   <div>
     <header class="flex flex-col border-b bg-white fixed w-screen z-10">
-      <div class="flex justify-between items-center w-full px-6 h-16">
+      <div class="flex justify-between items-center w-full px-6 h-14">
         <div class="flex justify-center items-center gap-12">
           <NuxtLink to="/dashboard">
             <NuxtImg src="/images/brand/logodark.svg" width="35" />

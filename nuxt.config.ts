@@ -45,4 +45,9 @@ export default defineNuxtConfig({
       alwaysRedirect: true,
     },
   },
+  runtimeConfig: {
+    public: {
+      baseFormShareUrl: process.env.NUXT_BASE_FORM_SHARE_URL,
+    },
+  },
 });

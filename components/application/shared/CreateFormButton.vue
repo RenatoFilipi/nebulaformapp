@@ -7,6 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import { Loader2, Plus } from "lucide-vue-next";
@@ -68,12 +69,12 @@ const onSubmit = form.handleSubmit(async (values) => {
                 <FormControl>
                   <Input type="text" placeholder="Name" v-bind="componentField" />
                 </FormControl>
-                <FormMessage />
               </FormItem>
             </FormField>
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
+          <DialogClose as-child><Button type="button" variant="outline">Cancel</Button></DialogClose>
           <Button type="submit" :disabled="isLoading">
             <div class="flex justify-center items-center" v-if="isLoading">
               <Loader2 class="animate-spin mr-2 h-4 w-4" />Creating
