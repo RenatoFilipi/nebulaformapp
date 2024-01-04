@@ -11,7 +11,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import type { elementProps, openEndedProps } from "~/lib/utils.interfaces";
-import { Trash } from "lucide-vue-next";
+import { Trash, AlertCircle } from "lucide-vue-next";
 import { useEditorStore } from "~/stores/editor";
 
 const editorStore = useEditorStore();
@@ -23,7 +23,7 @@ const element = defineProps<{
 </script>
 
 <template>
-  <Card :key="element.id" class="p-4 hover:border-primary border-dashed"
+  <Card :key="element.id" class="p-6 hover:border-primary border-dashed border-2 transition"
     ><div class="flex flex-col gap-4">
       <div class="flex justify-between items-center">
         <div class="flex justify-center items-center gap-4">
@@ -33,12 +33,14 @@ const element = defineProps<{
         <div class="flex justify-center items-center gap-4">
           <AlertDialog>
             <AlertDialogTrigger as-child>
-              <Button variant="outline"><Trash class="mr-2 w-4 h-4" />Delete Element</Button></AlertDialogTrigger
-            >
+              <Button size="sm" variant="outline"><Trash class="w-4 h-4" /></Button
+            ></AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>
+                <AlertDialogTitle class="flex justify-start items-center"
+                  ><AlertCircle class="mr-2 w-6 h-6 text-red-500" />Are you absolutely sure?</AlertDialogTitle
+                >
+                <AlertDialogDescription class="text-red-500">
                   This action cannot be undone. This will permanently delete this element of the form and all
                   information related to it.
                 </AlertDialogDescription>
@@ -55,7 +57,7 @@ const element = defineProps<{
       </div>
       <div class="flex justify-center items-center gap-4">
         <Label>Description</Label>
-        <Input v-model="element.props.description" />
+        <Input v-model="element.props.description" placeholder="(optional)" />
       </div></div
   ></Card>
 </template>

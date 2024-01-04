@@ -8,7 +8,7 @@ import type { openEndedProps, multipleChoiceProps, likertScaleProps } from "~/li
 import { LayoutGrid, Loader2 } from "lucide-vue-next";
 import { useToast } from "@/components/ui/toast/use-toast";
 import type { SBformsType } from "~/lib/utils.types";
-import { formatISO } from "date-fns";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const supabase = useSupabaseClient<Database>();
 const user = useSupabaseUser();
@@ -70,23 +70,23 @@ const handleSaveForm = async () => {
 
     if (formError) throw new Error(formError.message);
 
-    for (const el of editorStore.formElements) {
-      const { data: questionData, error: questionError } = await supabase
-        .from("questions")
-        .insert([
-          {
-            form_id: formData.id,
-            owner_id: user.value?.id as string,
-            type: el.type,
-            question: el.props.question,
-            description: el.props.description,
-          },
-        ])
-        .select()
-        .single();
+    // for (const el of editorStore.formElements) {
+    //   const { data: questionData, error: questionError } = await supabase
+    //     .from("questions")
+    //     .insert([
+    //       {
+    //         form_id: formData.id,
+    //         owner_id: user.value?.id as string,
+    //         type: el.type,
+    //         question: el.props.question,
+    //         description: el.props.description,
+    //       },
+    //     ])
+    //     .select()
+    //     .single();
 
-      if (questionError) throw new Error(questionError.message);
-    }
+    //   if (questionError) throw new Error(questionError.message);
+    // }
 
     //navigateTo("/dashboard/form/" + editorStore.formId);
   } catch (err: any) {
@@ -126,62 +126,55 @@ editorStore.setFormName(form.value.title as string);
 </script>
 
 <template>
-  <div>
-    <div class="flex flex-col items-center">
-      <div class="flex flex-1 w-full flex-col py-40 px-80 gap-12">
-        <div class="flex justify-between items-center">
-          <div>
-            <Input v-if="!isSavingForm" class="min-w-96" placeholder="Form Name" v-model.trim="editorStore.name" />
-            <span v-else class="">{{ editorStore.name }}</span>
-          </div>
-          <Button @click="handleSaveForm" :disabled="isSavingForm"
-            ><div class="flex justify-center items-center" v-if="isSavingForm">
-              <Loader2 class="animate-spin mr-2 h-4 w-4" />Saving
-            </div>
-            <div v-else>Save</div>
-          </Button>
+  <div class="pt-16">
+    <div class="mt-4 flex justify-center items-center">
+      <Tabs default-value="account" class="">
+        <div class="flex justify-center items-center gap-4">
+          <TabsList>
+            <TabsTrigger value="account">Blocks</TabsTrigger>
+            <TabsTrigger value="password">Settings</TabsTrigger>
+          </TabsList>
+          <Button>Publish</Button>
         </div>
-        <div :class="isSavingForm ? 'blur-sm pointer-events-none select-none' : null">
-          <div v-if="status === 'isLoading'" class="flex justify-center items-center py-20">
-            <div class="animate-spin">
-              <Loader2 className="w-4 h-4" />
+        <div class="flex justify-center items-center p-4 mt-10">
+          <TabsContent value="account" class="">
+            <!-- NO ELEMENTS -->
+            <div
+              v-if="status === 'isIdle' && editorStore.formElements.length <= 0"
+              class="flex justify-center items-center p-40">
+              <div class="flex flex-col items-center justify-center">
+                <LayoutGrid class="mb-2 w-6 h-6" />
+                <span class="mb-2">No element to show</span>
+                <span class="text-sm text-zinc-500 mb-6">Start by adding elements to publish.</span>
+                <ApplicationPagesEditorAddElementButton />
+              </div>
             </div>
-          </div>
-          <div
-            v-if="status === 'isIdle' && editorStore.formElements.length <= 0"
-            class="border flex justify-center items-center p-40">
-            <div class="flex flex-col items-center justify-center">
-              <LayoutGrid class="mb-2 w-6 h-6" />
-              <span class="mb-2">No element to show</span>
-              <span class="text-sm text-zinc-500 mb-6">Start by adding elements to publish.</span>
-              <ApplicationPagesEditorAddElementButton />
-            </div>
-          </div>
-          <div v-if="status === 'isIdle' && editorStore.formElements.length >= 1" class="flex flex-col gap-10">
-            <div v-for="(element, index) in editorStore.formElements" :key="index">
-              <ApplicationPagesEditorMultipleChoice
-                v-if="element.type === 'multipleChoice'"
-                :id="element.id"
-                type="multipleChoice"
-                :props="element.props as multipleChoiceProps" />
-              <ApplicationPagesEditorOpenEnded
-                v-if="element.type === 'openEnded'"
-                :id="element.id"
-                type="openEnded"
-                :props="element.props as openEndedProps" />
-              <ApplicationPagesEditorLikertScale
-                v-if="element.type === 'likertScale'"
-                :id="element.id"
-                type="likertScale"
-                :props="element.props as likertScaleProps" />
-            </div>
-            <div class="flex justify-center items-center w-full"><ApplicationPagesEditorAddElementButton /></div>
-          </div>
-          <div v-if="status === 'isRejected'" class="flex flex-col justify-center items-center py-20 gap-6">
-            <span class="text-zinc-500 text-sm">Something went wrong, please try again.</span>
-          </div>
+            <!-- WITH AT LEAST ONE ELEMENT -->
+            <div
+              v-if="status === 'isIdle' && editorStore.formElements.length >= 1"
+              class="flex flex-col gap-10 min-w-[800px]">
+              <div v-for="(element, index) in editorStore.formElements" :key="index">
+                <ApplicationPagesEditorMultipleChoice
+                  v-if="element.type === 'multipleChoice'"
+                  :id="element.id"
+                  type="multipleChoice"
+                  :props="element.props as multipleChoiceProps" />
+                <ApplicationPagesEditorOpenEnded
+                  v-if="element.type === 'openEnded'"
+                  :id="element.id"
+                  type="openEnded"
+                  :props="element.props as openEndedProps" />
+                <ApplicationPagesEditorLikertScale
+                  v-if="element.type === 'likertScale'"
+                  :id="element.id"
+                  type="likertScale"
+                  :props="element.props as likertScaleProps" />
+              </div>
+              <div class="flex justify-center items-center w-full"><ApplicationPagesEditorAddElementButton /></div></div
+          ></TabsContent>
+          <TabsContent value="password" class="">Working in progress</TabsContent>
         </div>
-      </div>
+      </Tabs>
     </div>
   </div>
 </template>

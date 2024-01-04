@@ -23,7 +23,7 @@ const element = defineProps<{
 </script>
 
 <template>
-  <Card :key="element.id" class="p-4 hover:border-primary border-dashed"
+  <Card :key="element.id" class="p-6 hover:border-primary border-dashed border-2 transition"
     ><div class="flex flex-col gap-4">
       <div class="flex justify-between items-center">
         <div class="flex justify-center items-center gap-4">
@@ -33,8 +33,8 @@ const element = defineProps<{
         <div class="flex justify-center items-center gap-4">
           <AlertDialog>
             <AlertDialogTrigger as-child>
-              <Button variant="outline"><Trash class="mr-2 w-4 h-4" />Delete Element</Button></AlertDialogTrigger
-            >
+              <Button size="sm" variant="outline"><Trash class="w-4 h-4" /></Button
+            ></AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
@@ -55,15 +55,15 @@ const element = defineProps<{
       </div>
       <div class="flex justify-center items-center gap-4">
         <Label>Description</Label>
-        <Input v-model="element.props.description" />
+        <Input v-model="element.props.description" placeholder="(optional)" />
       </div>
-      <div class="flex flex-col gap-4">
-        <div class="flex items-center">
-          <Label>Lowest Label</Label>
+      <div class="mt-4">
+        <div class="flex items-center gap-4 py-2">
+          <Label>Lowest</Label>
           <Input v-model="element.props.lowestLabel" placeholder="Lowest Label" />
         </div>
-        <div class="flex items-center">
-          <Label>Highest Label</Label>
+        <div class="flex items-center gap-4 py-2">
+          <Label>Highest</Label>
           <Input v-model="element.props.highestLabel" placeholder="Highest Label" />
         </div>
       </div></div
