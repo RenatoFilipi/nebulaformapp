@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { formatDistance, parseISO } from "date-fns";
+import { formatDistance, parseISO, format } from "date-fns";
 import { v4 as uuidv4 } from "uuid";
 
 export function cn(...inputs: ClassValue[]) {
@@ -25,6 +25,16 @@ export function parseFormatDistanceDate(date: string, referenceDate: Date = new 
   }
   const distance = formatDistance(parsedDate, referenceDate, { addSuffix: true });
   return distance;
+}
+
+export function parseFormatDateWithDistanceDate(date: string, referenceDate: Date = new Date()): string | null {
+  const parsedDate = parseISO(date);
+  if (isNaN(parsedDate.getTime())) {
+    return null;
+  }
+  const distance = formatDistance(parsedDate, referenceDate, { addSuffix: true });
+  const formattedDate = format(parsedDate, "dd/MM/yyyy");
+  return `${formattedDate} (${distance})`;
 }
 
 export function newUuid() {

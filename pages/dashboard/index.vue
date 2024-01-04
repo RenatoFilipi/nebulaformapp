@@ -25,33 +25,28 @@ watch(
   { immediate: true }
 );
 
-const status = ref<statusType>("isLoading");
+const statusForms = ref<statusType>("isLoading");
 const forms = ref<SBformsType[]>([]);
 
-const { data } = await useAsyncData("forms", async () => {
-  status.value = "isLoading";
-  const { data, error } = await supabase
+const { data: dataForms } = await useAsyncData("forms", async () => {
+  statusForms.value = "isLoading";
+  const { data: dataFetch, error } = await supabase
     .from("forms")
     .select("*")
     .eq("owner_id", user.value?.id as string);
+
+  const data = dataFetch !== null ? dataFetch : [];
   return { data, error };
 });
 
 const afterFormsFetch = () => {
-  if (data.value === null) {
-    status.value = "isRejected";
+  if (dataForms.value === null || dataForms.value.error) {
+    statusForms.value = "isRejected";
     return;
   }
-  if (data.value.error) {
-    status.value = "isRejected";
-    return;
-  }
-  if (data.value.data === null) {
-    status.value = "isRejected";
-    return;
-  }
-  forms.value = data.value.data;
-  status.value = "isIdle";
+
+  forms.value = dataForms.value.data;
+  statusForms.value = "isIdle";
 };
 
 afterFormsFetch();
@@ -65,12 +60,12 @@ afterFormsFetch();
           <span class="font-bold text-3xl">Forms</span>
           <div><ApplicationSharedCreateFormButton /></div>
         </div>
-        <div v-if="status === 'isLoading'" class="flex justify-center items-center py-20">
+        <div v-if="statusForms === 'isLoading'" class="flex justify-center items-center py-20">
           <div class="animate-spin">
-            <Loader2 class="w-6 h-6" />
+            <Loader2 class="w-6 h-6 text-primary" />
           </div>
         </div>
-        <Card v-if="status === 'isIdle' && forms.length <= 0" class="flex justify-center items-center">
+        <Card v-if="statusForms === 'isIdle' && forms.length <= 0" class="flex justify-center items-center">
           <div class="flex justify-center items-center flex-col p-40">
             <div class="flex flex-col items-center justify-center">
               <Box class="mb-2 h-6 w-6" />
@@ -79,7 +74,7 @@ afterFormsFetch();
             </div>
           </div>
         </Card>
-        <ul v-if="status === 'isIdle' && forms.length >= 1" class="grid grid-cols-3 gap-6">
+        <ul v-if="statusForms === 'isIdle' && forms.length >= 1" class="grid grid-cols-3 gap-6">
           <li v-for="(form, index) in forms" :key="index">
             <NuxtLink :to="'/dashboard/form/' + form.id">
               <Card class="p-6 h-40 flex flex-col justify-between hover:border-primary">
@@ -96,7 +91,7 @@ afterFormsFetch();
             </NuxtLink>
           </li>
         </ul>
-        <div v-if="status === 'isRejected'" class="flex flex-col justify-center items-center py-20 gap-6">
+        <div v-if="statusForms === 'isRejected'" class="flex flex-col justify-center items-center py-20 gap-6">
           <span class="text-zinc-500 text-sm">Something went wrong, please try again.</span>
         </div>
       </div>

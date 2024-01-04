@@ -2,8 +2,10 @@
 import { Box, Loader2 } from "lucide-vue-next";
 import type { Database } from "~/lib/database.types";
 import { parseFormatDistanceDate } from "~/lib/utils";
-import type { SBformsType, statusType } from "~/lib/utils.types";
+import type { SBformsType, statusType, SBresponsesType } from "~/lib/utils.types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { parseFormatDateWithDistanceDate } from "~/lib/utils";
 
 const supabase = useSupabaseClient<Database>();
 const user = useSupabaseUser();
@@ -27,6 +29,7 @@ watch(
   { immediate: true }
 );
 
+const statusForm = ref<statusType>("isLoading");
 const statusResponses = ref<statusType>("isLoading");
 const statusSettings = ref<statusType>("isLoading");
 const statusShare = ref<statusType>("isLoading");
@@ -43,33 +46,46 @@ const form = ref<SBformsType>({
   mode: "",
 });
 
-const { data } = await useAsyncData("form", async () => {
-  statusResponses.value = "isLoading";
-  statusShare.value = "isLoading";
-  statusSettings.value = "isLoading";
+const responses = ref<SBresponsesType[]>([]);
+
+const { data: dataForm } = await useAsyncData("form", async () => {
+  statusForm.value = "isLoading";
 
   const { data, error } = await supabase.from("forms").select("*").eq("id", route.params.id).single();
   return { data, error };
 });
 
-if (data.value !== null) {
-  if (!data.value.error) {
-    if (data.value.data !== null) {
-      if (data.value.data.owner_id === (user.value?.id as string)) {
-        form.value = data.value.data;
-        statusResponses.value = "isIdle";
-        statusShare.value = "isIdle";
-        statusSettings.value = "isIdle";
-      } else {
-        navigateTo("/dashboard");
-      }
-    }
+const { data: dataResponses } = await useAsyncData("responses", async () => {
+  statusResponses.value = "isLoading";
+
+  const { data: dataFetch, error } = await supabase.from("responses").select("*").eq("form_id", route.params.id);
+  const data = dataFetch !== null ? dataFetch : [];
+  return { data, error };
+});
+
+const afterFormFetch = () => {
+  if (dataForm.value === null || dataForm.value.error || dataForm.value.data === null) {
+    statusForm.value = "isRejected";
+    return;
   }
-} else {
-  statusResponses.value = "isRejected";
-  statusShare.value = "isRejected";
-  statusSettings.value = "isRejected";
-}
+  if (dataForm.value.data.owner_id !== (user.value?.id as string)) {
+    navigateTo("/dashboard");
+  }
+  form.value = dataForm.value.data;
+  statusForm.value = "isIdle";
+};
+
+const afterResponsesFetch = () => {
+  if (dataResponses.value === null || dataResponses.value.error) {
+    statusResponses.value = "isRejected";
+    return;
+  }
+  responses.value = dataResponses.value.data;
+  statusResponses.value = "isIdle";
+};
+
+afterFormFetch();
+afterResponsesFetch();
 </script>
 
 <template>
@@ -99,14 +115,31 @@ if (data.value !== null) {
         <TabsContent value="responses">
           <Card v-if="statusResponses === 'isLoading'" class="flex justify-center items-center py-44">
             <div class="animate-spin">
-              <Loader2 class="w-6 h-6" />
+              <Loader2 class="w-6 h-6 text-primary" />
             </div>
           </Card>
-          <Card v-if="statusResponses === 'isIdle'" class="flex flex-col">
+          <Card v-if="statusResponses === 'isIdle' && responses.length <= 0" class="flex flex-col">
             <div class="border-b p-3"><span class="text-zinc-500">Latest form activity</span></div>
             <div class="flex justify-center items-center p-44">
               <span class="text-zinc-500 text-sm">No form responses to show.</span>
             </div>
+          </Card>
+          <Card v-if="statusResponses === 'isIdle' && responses.length >= 1" class="flex flex-col">
+            <div class="border-b p-3"><span class="text-zinc-500">Latest form activity</span></div>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Identifier</TableHead>
+                  <TableHead>Submited</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow class="text-neutral-700" v-for="(response, index) in responses" :key="index">
+                  <TableCell># {{ response.id }}</TableCell>
+                  <TableCell>{{ parseFormatDateWithDistanceDate(response.created_at) }}</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
           </Card></TabsContent
         >
         <TabsContent value="share">Working in progress - Share</TabsContent>

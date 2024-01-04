@@ -98,28 +98,28 @@ const handleSaveForm = async () => {
   }
 };
 
-const { data } = await useAsyncData("form", async () => {
-  status.value = "isLoading";
+// const { data } = await useAsyncData("form", async () => {
+//   status.value = "isLoading";
 
-  const { data, error } = await supabase
-    .from("forms")
-    .select("*")
-    .eq("owner_id", user.value?.id as string)
-    .single();
+//   const { data, error } = await supabase
+//     .from("forms")
+//     .select("*")
+//     .eq("owner_id", user.value?.id as string)
+//     .single();
 
-  return { data, error };
-});
+//   return { data, error };
+// });
 
-if (data.value !== null) {
-  if (!data.value.error) {
-    if (data.value.data !== null) {
-      form.value = data.value.data;
-      status.value = "isIdle";
-    }
-  }
-} else {
-  status.value = "isRejected";
-}
+// if (data.value !== null) {
+//   if (!data.value.error) {
+//     if (data.value.data !== null) {
+//       form.value = data.value.data;
+//       status.value = "isIdle";
+//     }
+//   }
+// } else {
+//   status.value = "isRejected";
+// }
 
 editorStore.setFormName(form.value.title as string);
 </script>
