@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { parseFormatDateWithDistanceDate } from "~/lib/utils";
 import { useToast } from "@/components/ui/toast/use-toast";
+import { formModeOptions } from "~/lib/utils.config";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -17,6 +18,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const supabase = useSupabaseClient<Database>();
 const user = useSupabaseUser();
@@ -60,6 +70,7 @@ const form = ref<SBformsType>({
 
 const responses = ref<SBresponsesType[]>([]);
 const shareLink = ref("");
+const selectedMode = ref("");
 
 const { data: dataForm } = await useAsyncData("form", async () => {
   statusForm.value = "isLoading";
@@ -85,6 +96,7 @@ const afterFormFetch = () => {
     navigateTo("/dashboard");
   }
   form.value = dataForm.value.data;
+  selectedMode.value = dataForm.value.data.mode;
   shareLink.value = config.public.baseFormShareUrl + "/r/" + form.value.public_id;
   statusForm.value = "isIdle";
 };
@@ -113,6 +125,28 @@ const handleDeleteForm = async () => {
     const { error } = await supabase.from("forms").delete().eq("id", route.params.id);
     if (error) throw new Error(error.message);
     navigateTo("/dashboard");
+  } catch (err: any) {
+    toast({ variant: "destructive", description: err.message });
+  } finally {
+    isLoadingSettings.value = false;
+  }
+};
+
+const handleSettings = async () => {
+  try {
+    isLoadingSettings.value = true;
+    const { data, error } = await supabase
+      .from("forms")
+      .update({ mode: selectedMode.value })
+      .eq("id", route.params.id)
+      .select()
+      .single();
+
+    if (error) throw new Error(error.message);
+
+    selectedMode.value = data.mode;
+    form.value.mode = data.mode;
+    toast({ description: "Settings Updated." });
   } catch (err: any) {
     toast({ variant: "destructive", description: err.message });
   } finally {
@@ -190,11 +224,42 @@ afterResponsesFetch();
             <Button variant="outline" @click="copyToClipboard"><Copy class="mr-2 w-4 h-4" />Copy Link</Button>
           </Card>
         </TabsContent>
-        <TabsContent value="settings">
-          <Card class="p-6 border-destructive">
+        <TabsContent value="settings" class="flex flex-col gap-10">
+          <Card class="p-6">
+            <div class="mb-4">
+              <div class="flex flex-col gap-2 mb-4">
+                <span class="">Form Mode</span>
+                <span class="text-neutral-500 text-sm">Select a mode for the form.</span>
+              </div>
+              <Select :default-value="form.mode" v-model="selectedMode">
+                <SelectTrigger class="w-[180px]">
+                  <SelectValue placeholder="Select a mode" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Modes</SelectLabel>
+                    <SelectItem v-for="(mode, index) in formModeOptions" :key="index" :value="mode">{{
+                      mode
+                    }}</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            <div class="flex justify-end">
+              <Button @click="handleSettings">
+                <div class="flex justify-center items-center" v-if="isLoadingSettings">
+                  <Loader2 class="animate-spin mr-2 h-4 w-4" />Saving Changes
+                </div>
+                <div v-else>Save Changes</div></Button
+              >
+            </div></Card
+          >
+          <Card class="p-6 border-red-200">
             <div class="flex flex-col gap-2 mb-4">
               <span class="text-lg">Danger Zone</span>
-              <span class="text-neutral-500">The following actions are destructive and cannot be reversed.</span>
+              <span class="text-neutral-500 text-sm"
+                >The following actions are destructive and cannot be reversed.</span
+              >
             </div>
             <AlertDialog>
               <AlertDialogTrigger as-child>

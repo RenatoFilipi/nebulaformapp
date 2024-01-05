@@ -24,3 +24,5 @@ export const editorElementOptions: editorElementOptionProps[] = [
 ];
 
 export const editorElementOptionsEnum = ["multipleChoice", "openEnded", "likertScale"] as const;
+
+export const formModeOptions = ["draft", "published", "inactive"];
