@@ -14,7 +14,7 @@ export interface elementProps {
 export interface multipleChoiceProps {
   question: string;
   description: string;
-  options: { value: string; label: string }[];
+  options: { id: string; value: string; label: string }[];
 }
 
 export interface openEndedProps {
@@ -23,6 +23,7 @@ export interface openEndedProps {
 }
 
 export interface likertScaleProps {
+  id: string;
   question: string;
   description: string;
   lowestLabel: string;

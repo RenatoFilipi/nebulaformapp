@@ -18,7 +18,7 @@ export interface Database {
           owner_id: string
           public_id: string
           responses: number
-          title: string | null
+          title: string
           updated_at: string
         }
         Insert: {
@@ -29,7 +29,7 @@ export interface Database {
           owner_id: string
           public_id?: string
           responses?: number
-          title?: string | null
+          title?: string
           updated_at?: string
         }
         Update: {
@@ -40,7 +40,7 @@ export interface Database {
           owner_id?: string
           public_id?: string
           responses?: number
-          title?: string | null
+          title?: string
           updated_at?: string
         }
         Relationships: [
@@ -95,7 +95,7 @@ export interface Database {
           form_id: string
           id: string
           owner_id: string
-          question: string | null
+          question: string
           type: string
           updated_at: string
         }
@@ -105,7 +105,7 @@ export interface Database {
           form_id: string
           id?: string
           owner_id: string
-          question?: string | null
+          question?: string
           type?: string
           updated_at?: string
         }
@@ -115,7 +115,7 @@ export interface Database {
           form_id?: string
           id?: string
           owner_id?: string
-          question?: string | null
+          question?: string
           type?: string
           updated_at?: string
         }
@@ -139,25 +139,25 @@ export interface Database {
       questions_likert_scale: {
         Row: {
           created_at: string
-          highest_label: string | null
+          highest_label: string
           id: string
-          lowest_label: string | null
+          lowest_label: string
           question_id: string
           updated_at: string
         }
         Insert: {
           created_at?: string
-          highest_label?: string | null
+          highest_label?: string
           id?: string
-          lowest_label?: string | null
+          lowest_label?: string
           question_id: string
           updated_at?: string
         }
         Update: {
           created_at?: string
-          highest_label?: string | null
+          highest_label?: string
           id?: string
-          lowest_label?: string | null
+          lowest_label?: string
           question_id?: string
           updated_at?: string
         }
@@ -175,26 +175,26 @@ export interface Database {
         Row: {
           created_at: string
           id: string
-          label: string | null
+          label: string
           question_id: string
           updated_at: string
-          value: string | null
+          value: string
         }
         Insert: {
           created_at?: string
           id?: string
-          label?: string | null
+          label?: string
           question_id: string
           updated_at?: string
-          value?: string | null
+          value?: string
         }
         Update: {
           created_at?: string
           id?: string
-          label?: string | null
+          label?: string
           question_id?: string
           updated_at?: string
-          value?: string | null
+          value?: string
         }
         Relationships: [
           {

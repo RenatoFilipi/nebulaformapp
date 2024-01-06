@@ -94,7 +94,7 @@ const onSubmit = form.handleSubmit((values) => {
 <template>
   <Dialog v-model:open="openDialog">
     <DialogTrigger as-child>
-      <Button variant="outline" class=""><Plus class="mr-2 w-4 h-4" />Add Element</Button>
+      <Button variant="outline"><Plus class="mr-2 w-4 h-4" />Add Element</Button>
     </DialogTrigger>
     <DialogContent>
       <form @submit="onSubmit">

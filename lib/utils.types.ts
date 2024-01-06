@@ -9,3 +9,6 @@ export type elementQuestionType = "multipleChoice" | "openEnded" | "likertScale"
 //supabase database types
 export type SBformsType = Database["public"]["Tables"]["forms"]["Row"];
 export type SBresponsesType = Database["public"]["Tables"]["responses"]["Row"];
+export type SBquestionsType = Database["public"]["Tables"]["questions"]["Row"];
+export type SBquestionMultipleChoiceType = Database["public"]["Tables"]["questions_multiple_choice"]["Row"];
+export type SBquestionLikertScaleType = Database["public"]["Tables"]["questions_likert_scale"]["Row"];
