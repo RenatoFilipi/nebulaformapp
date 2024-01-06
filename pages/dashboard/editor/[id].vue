@@ -48,14 +48,6 @@ const form = ref<SBformsType>({
 });
 const questions = ref<elementProps[]>([]);
 
-onBeforeMount(() => {
-  editorStore.setFormId(route.params.id as string);
-});
-
-onBeforeUnmount(() => {
-  editorStore.reset();
-});
-
 const { data: dataForm } = await useAsyncData("form", async () => {
   statusForm.value = "isLoading";
   const { data, error } = await supabase.from("forms").select("*").eq("id", route.params.id).single();
@@ -77,6 +69,7 @@ const afterFormFetch = () => {
   if (dataForm.value.data.owner_id !== (user.value?.id as string)) {
     navigateTo("/dashboard");
   }
+  form.value = dataForm.value.data;
   statusForm.value = "isIdle";
 };
 
@@ -165,7 +158,22 @@ const afterQuestionsFetch = async () => {
     }
   }
   statusQuestions.value = "isIdle";
-  console.log(questions.value);
+};
+
+const handleFormInputName = async () => {
+  try {
+    const { data, error } = await supabase
+      .from("forms")
+      .update({ title: form.value.title })
+      .eq("id", route.params.id)
+      .select("title")
+      .single();
+
+    if (error) throw new Error(error.message);
+    form.value.title = data.title;
+  } catch (err: any) {
+    console.error(err.message);
+  }
 };
 
 afterFormFetch();
@@ -173,11 +181,22 @@ afterQuestionsFetch();
 </script>
 
 <template>
-  <div class="pt-16">
-    <div class="mt-4 flex justify-center items-center">
-      <div v-if="statusQuestions === 'isIdle'" class="flex flex-col gap-6">
-        <span v-for="(question, index) in questions" :key="index">{{ question.id }}</span>
+  <div class="pt-24">
+    <Tabs default-value="blocks">
+      <div class="flex justify-center items-center gap-4">
+        <TabsList>
+          <TabsTrigger value="blocks">Blocks</TabsTrigger>
+          <TabsTrigger value="preview">Preview</TabsTrigger>
+          <TabsTrigger value="settings">Settings</TabsTrigger>
+        </TabsList>
+        <Button>Publish</Button>
       </div>
-    </div>
+      <div class="flex justify-center items-center p-4 mt-10">
+        <TabsContent value="blocks">wip</TabsContent>
+        <TabsContent value="settings"
+          ><Card><Input v-model="form.title" @blur="handleFormInputName" /></Card
+        ></TabsContent>
+      </div>
+    </Tabs>
   </div>
 </template>

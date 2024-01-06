@@ -12,7 +12,7 @@ export interface Database {
       forms: {
         Row: {
           created_at: string
-          description: string | null
+          description: string
           id: string
           mode: string
           owner_id: string
@@ -23,7 +23,7 @@ export interface Database {
         }
         Insert: {
           created_at?: string
-          description?: string | null
+          description?: string
           id?: string
           mode?: string
           owner_id: string
@@ -34,7 +34,7 @@ export interface Database {
         }
         Update: {
           created_at?: string
-          description?: string | null
+          description?: string
           id?: string
           mode?: string
           owner_id?: string
@@ -91,7 +91,7 @@ export interface Database {
       questions: {
         Row: {
           created_at: string
-          description: string | null
+          description: string
           form_id: string
           id: string
           owner_id: string
@@ -101,7 +101,7 @@ export interface Database {
         }
         Insert: {
           created_at?: string
-          description?: string | null
+          description?: string
           form_id: string
           id?: string
           owner_id: string
@@ -111,7 +111,7 @@ export interface Database {
         }
         Update: {
           created_at?: string
-          description?: string | null
+          description?: string
           form_id?: string
           id?: string
           owner_id?: string

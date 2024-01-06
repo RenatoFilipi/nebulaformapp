@@ -95,6 +95,7 @@ const afterFormFetch = () => {
   if (dataForm.value.data.owner_id !== (user.value?.id as string)) {
     navigateTo("/dashboard");
   }
+
   form.value = dataForm.value.data;
   selectedMode.value = dataForm.value.data.mode;
   shareLink.value = config.public.baseFormShareUrl + "/r/" + form.value.public_id;
@@ -228,7 +229,33 @@ afterResponsesFetch();
           <Card class="p-6">
             <div class="mb-4">
               <div class="flex flex-col gap-2 mb-4">
-                <span class="">Form Mode</span>
+                <span class="">General</span>
+                <span class="text-neutral-500 text-sm">Adjust your form's general settings.</span>
+              </div>
+              <div class="flex flex-col gap-4">
+                <div class="grid w-full max-w-sm items-center gap-1.5">
+                  <Label for="title">Title</Label>
+                  <Input id="title" v-model="form.title" class="w-[350px]" />
+                </div>
+                <div class="grid w-full max-w-sm items-center gap-1.5">
+                  <Label for="description">Description</Label>
+                  <Input id="description" class="w-[350px]" />
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-end">
+              <Button @click="handleSettings">
+                <div class="flex justify-center items-center" v-if="isLoadingSettings">
+                  <Loader2 class="animate-spin mr-2 h-4 w-4" />Saving Changes
+                </div>
+                <div v-else>Save Changes</div></Button
+              >
+            </div></Card
+          >
+          <Card class="p-6">
+            <div class="mb-4">
+              <div class="flex flex-col gap-2 mb-4">
+                <span class="">Mode</span>
                 <span class="text-neutral-500 text-sm">Select a mode for the form.</span>
               </div>
               <Select :default-value="form.mode" v-model="selectedMode">
