@@ -3,30 +3,9 @@ import { Box, Loader2, Copy } from "lucide-vue-next";
 import type { Database } from "~/lib/database.types";
 import { parseFormatDistanceDate } from "~/lib/utils";
 import type { SBformsType, statusType, SBresponsesType } from "~/lib/utils.types";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { parseFormatDateWithDistanceDate } from "~/lib/utils";
 import { useToast } from "@/components/ui/toast/use-toast";
 import { formModeOptions } from "~/lib/utils.config";
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 const supabase = useSupabaseClient<Database>();
 const user = useSupabaseUser();
@@ -71,6 +50,8 @@ const form = ref<SBformsType>({
 const responses = ref<SBresponsesType[]>([]);
 const shareLink = ref("");
 const selectedMode = ref("");
+const formTitle = ref("");
+const formLastUpdate = ref("");
 
 const { data: dataForm } = await useAsyncData("form", async () => {
   statusForm.value = "isLoading";
@@ -98,6 +79,8 @@ const afterFormFetch = () => {
 
   form.value = dataForm.value.data;
   selectedMode.value = dataForm.value.data.mode;
+  formTitle.value = dataForm.value.data.title;
+  formLastUpdate.value = dataForm.value.data.updated_at;
   shareLink.value = config.public.baseFormShareUrl + "/r/" + form.value.public_id;
   statusForm.value = "isIdle";
 };
@@ -133,12 +116,12 @@ const handleDeleteForm = async () => {
   }
 };
 
-const handleSettings = async () => {
+const handleGeneralSettings = async () => {
   try {
     isLoadingSettings.value = true;
     const { data, error } = await supabase
       .from("forms")
-      .update({ mode: selectedMode.value })
+      .update({ mode: selectedMode.value, title: form.value.title, description: form.value.description })
       .eq("id", route.params.id)
       .select()
       .single();
@@ -146,6 +129,8 @@ const handleSettings = async () => {
     if (error) throw new Error(error.message);
 
     selectedMode.value = data.mode;
+    formTitle.value = data.title;
+    formLastUpdate.value = data.updated_at;
     form.value.mode = data.mode;
     toast({ description: "Settings Updated." });
   } catch (err: any) {
@@ -166,7 +151,7 @@ afterResponsesFetch();
         <div class="flex justify-center items-center gap-6">
           <div class="flex items-center justify-center gap-2">
             <Box />
-            <span class="font-semibold text-xl">{{ form.title }}</span>
+            <span class="font-semibold text-xl">{{ formTitle }}</span>
           </div>
           <div class="flex justify-start items-center gap-4">
             <Badge variant="outline">{{ form.mode }}</Badge>
@@ -183,7 +168,7 @@ afterResponsesFetch();
         </div>
       </div>
       <div class="flex">
-        <span class="text-zinc-500 text-sm">Last update was {{ parseFormatDistanceDate(form.updated_at) }}</span>
+        <span class="text-zinc-500 text-sm">Last update was {{ parseFormatDistanceDate(formLastUpdate) }}</span>
       </div>
       <div class="mt-10">
         <TabsContent value="responses">
@@ -228,8 +213,8 @@ afterResponsesFetch();
         <TabsContent value="settings" class="flex flex-col gap-10">
           <Card class="p-6">
             <div class="mb-4">
-              <div class="flex flex-col gap-2 mb-4">
-                <span class="">General</span>
+              <div class="flex flex-col gap-2 mb-8">
+                <span class="text-lg">General</span>
                 <span class="text-neutral-500 text-sm">Adjust your form's general settings.</span>
               </div>
               <div class="flex flex-col gap-4">
@@ -239,41 +224,28 @@ afterResponsesFetch();
                 </div>
                 <div class="grid w-full max-w-sm items-center gap-1.5">
                   <Label for="description">Description</Label>
-                  <Input id="description" class="w-[350px]" />
+                  <Input id="description" v-model="form.description" class="w-[350px]" />
+                </div>
+                <div class="grid w-full max-w-sm items-center gap-1.5">
+                  <Label for="mode">Mode</Label>
+                  <Select id="mode" :default-value="form.mode" v-model="selectedMode">
+                    <SelectTrigger class="w-[350px]">
+                      <SelectValue placeholder="Select a mode" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Modes</SelectLabel>
+                        <SelectItem v-for="(mode, index) in formModeOptions" :key="index" :value="mode">{{
+                          mode
+                        }}</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             </div>
             <div class="flex justify-end">
-              <Button @click="handleSettings">
-                <div class="flex justify-center items-center" v-if="isLoadingSettings">
-                  <Loader2 class="animate-spin mr-2 h-4 w-4" />Saving Changes
-                </div>
-                <div v-else>Save Changes</div></Button
-              >
-            </div></Card
-          >
-          <Card class="p-6">
-            <div class="mb-4">
-              <div class="flex flex-col gap-2 mb-4">
-                <span class="">Mode</span>
-                <span class="text-neutral-500 text-sm">Select a mode for the form.</span>
-              </div>
-              <Select :default-value="form.mode" v-model="selectedMode">
-                <SelectTrigger class="w-[180px]">
-                  <SelectValue placeholder="Select a mode" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Modes</SelectLabel>
-                    <SelectItem v-for="(mode, index) in formModeOptions" :key="index" :value="mode">{{
-                      mode
-                    }}</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-            <div class="flex justify-end">
-              <Button @click="handleSettings">
+              <Button @click="handleGeneralSettings">
                 <div class="flex justify-center items-center" v-if="isLoadingSettings">
                   <Loader2 class="animate-spin mr-2 h-4 w-4" />Saving Changes
                 </div>
@@ -288,29 +260,33 @@ afterResponsesFetch();
                 >The following actions are destructive and cannot be reversed.</span
               >
             </div>
-            <AlertDialog>
-              <AlertDialogTrigger as-child>
-                <Button variant="destructive">Delete Form</Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle class="flex justify-start items-center">Are you absolutely sure?</AlertDialogTitle>
-                  <AlertDialogDescription class="text-red-500">
-                    This action cannot be undone. This will permanently delete this form of the form and all information
-                    associated with this form.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel :disabled="isLoadingSettings">Cancel</AlertDialogCancel>
-                  <Button variant="destructive" type="button" @click="handleDeleteForm" :disabled="isLoadingSettings">
-                    <div class="flex justify-center items-center" v-if="isLoadingSettings">
-                      <Loader2 class="animate-spin mr-2 h-4 w-4" />Deleting Form
-                    </div>
-                    <div v-else>Delete Form</div></Button
-                  >
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+            <div class="flex justify-end">
+              <AlertDialog>
+                <AlertDialogTrigger as-child>
+                  <Button variant="destructive">Delete Form</Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle class="flex justify-start items-center"
+                      >Are you absolutely sure?</AlertDialogTitle
+                    >
+                    <AlertDialogDescription class="text-red-500">
+                      This action cannot be undone. This will permanently delete this form of the form and all
+                      information associated with this form.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel :disabled="isLoadingSettings">Cancel</AlertDialogCancel>
+                    <Button variant="destructive" type="button" @click="handleDeleteForm" :disabled="isLoadingSettings">
+                      <div class="flex justify-center items-center" v-if="isLoadingSettings">
+                        <Loader2 class="animate-spin mr-2 h-4 w-4" />Deleting Form
+                      </div>
+                      <div v-else>Delete Form</div></Button
+                    >
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
           </Card></TabsContent
         >
       </div>

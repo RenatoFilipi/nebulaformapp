@@ -160,22 +160,6 @@ const afterQuestionsFetch = async () => {
   statusQuestions.value = "isIdle";
 };
 
-const handleFormInputName = async () => {
-  try {
-    const { data, error } = await supabase
-      .from("forms")
-      .update({ title: form.value.title })
-      .eq("id", route.params.id)
-      .select("title")
-      .single();
-
-    if (error) throw new Error(error.message);
-    form.value.title = data.title;
-  } catch (err: any) {
-    console.error(err.message);
-  }
-};
-
 afterFormFetch();
 afterQuestionsFetch();
 </script>
@@ -187,15 +171,12 @@ afterQuestionsFetch();
         <TabsList>
           <TabsTrigger value="blocks">Blocks</TabsTrigger>
           <TabsTrigger value="preview">Preview</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
         <Button>Publish</Button>
       </div>
       <div class="flex justify-center items-center p-4 mt-10">
-        <TabsContent value="blocks">wip</TabsContent>
-        <TabsContent value="settings"
-          ><Card><Input v-model="form.title" @blur="handleFormInputName" /></Card
-        ></TabsContent>
+        <TabsContent value="blocks">wip - Blocks</TabsContent>
+        <TabsContent value="preview">wip - Preview</TabsContent>
       </div>
     </Tabs>
   </div>
