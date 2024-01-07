@@ -4,7 +4,7 @@ import type { statusType } from "~/lib/utils.types";
 import { useEditorStore } from "~/stores/editor";
 import { watch } from "vue";
 import type { openEndedProps, multipleChoiceProps, likertScaleProps, elementProps } from "~/lib/utils.interfaces";
-import { LayoutGrid } from "lucide-vue-next";
+import { LayoutGrid, Loader2 } from "lucide-vue-next";
 import { useToast } from "@/components/ui/toast/use-toast";
 import type { SBformsType, SBquestionsType } from "~/lib/utils.types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -175,7 +175,19 @@ afterQuestionsFetch();
         <Button>Publish</Button>
       </div>
       <div class="flex justify-center items-center p-4 mt-10">
-        <TabsContent value="blocks">wip - Blocks</TabsContent>
+        <TabsContent value="blocks"
+          ><div class="mt-24" v-if="statusQuestions === 'isLoading'">
+            <div class="animate-spin">
+              <Loader2 class="w-6 h-6 text-primary" />
+            </div>
+          </div>
+          <div class="mt-24" v-if="statusQuestions === 'isRejected'">
+            <div class="">
+              <span>Something went wrong, please try again.</span>
+            </div>
+          </div>
+          <div v-if="statusQuestions === 'isIdle' && questions.length <= 0">Empty</div></TabsContent
+        >
         <TabsContent value="preview">wip - Preview</TabsContent>
       </div>
     </Tabs>
