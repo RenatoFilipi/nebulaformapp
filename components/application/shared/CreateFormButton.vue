@@ -63,9 +63,7 @@ const onSubmit = form.handleSubmit(async (values) => {
 
 <template>
   <Dialog>
-    <DialogTrigger as-child
-      ><Button><Plus class="mr-2 w-4 h-4" />Create Form</Button></DialogTrigger
-    >
+    <DialogTrigger as-child><Button>Create Form</Button></DialogTrigger>
     <DialogContent>
       <form @submit="onSubmit">
         <DialogHeader>
