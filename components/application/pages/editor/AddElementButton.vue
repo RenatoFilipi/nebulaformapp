@@ -1,13 +1,4 @@
 <script setup lang="ts">
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { editorElementOptions, editorElementOptionsEnum } from "~/lib/utils.config";
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
@@ -15,11 +6,11 @@ import * as z from "zod";
 import { RadioGroup } from "~/components/ui/radio-group";
 import { CheckSquare2, Text, Star, Plus } from "lucide-vue-next";
 import { newUuid } from "~/lib/utils";
-import { useEditorStore } from "~/stores/editor";
 import type { multipleChoiceProps, openEndedProps, likertScaleProps, elementProps } from "~/lib/utils.interfaces";
 
-const editorStore = useEditorStore();
 const openDialog = ref(false);
+
+const props = defineProps<{ addQuestionAction: (value: elementProps) => void }>();
 
 const formSchema = toTypedSchema(
   z.object({
@@ -37,12 +28,15 @@ const onSubmit = form.handleSubmit((values) => {
   switch (values.type) {
     case "multipleChoice":
       {
+        const id1 = newUuid();
+        const id2 = newUuid();
+
         const templateElementProps: multipleChoiceProps = {
           question: "Multiple Choice Element",
           description: "",
           options: [
-            { label: "Option Label", value: newUuid() },
-            { label: "Option Label", value: newUuid() },
+            { id: id1, label: "Option Label", value: id1 },
+            { id: id2, label: "Option Label", value: id2 },
           ],
         };
 
@@ -51,7 +45,7 @@ const onSubmit = form.handleSubmit((values) => {
           type: "multipleChoice",
           props: templateElementProps,
         };
-        editorStore.addElement(templateElement);
+        props.addQuestionAction(templateElement);
       }
       break;
     case "openEnded":
@@ -66,12 +60,13 @@ const onSubmit = form.handleSubmit((values) => {
           type: "openEnded",
           props: templateElementProps,
         };
-        editorStore.addElement(templateElement);
+        props.addQuestionAction(templateElement);
       }
       break;
     case "likertScale":
       {
         const templateElementProps: likertScaleProps = {
+          id: newUuid(),
           question: "Likert Scale Element",
           description: "",
           lowestLabel: "",
@@ -83,7 +78,7 @@ const onSubmit = form.handleSubmit((values) => {
           type: "likertScale",
           props: templateElementProps,
         };
-        editorStore.addElement(templateElement);
+        props.addQuestionAction(templateElement);
       }
       break;
   }

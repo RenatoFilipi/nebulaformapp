@@ -14,11 +14,11 @@ import type { elementProps, openEndedProps } from "~/lib/utils.interfaces";
 import { Trash, AlertCircle } from "lucide-vue-next";
 import { useEditorStore } from "~/stores/editor";
 
-const editorStore = useEditorStore();
 const element = defineProps<{
   id: elementProps["id"];
   type: elementProps["type"];
   props: openEndedProps;
+  removeQuestionAction: (id: string) => void;
 }>();
 </script>
 
@@ -48,7 +48,7 @@ const element = defineProps<{
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction as-child
-                  ><Button @click="editorStore.removeElement(element.id)">Delete</Button></AlertDialogAction
+                  ><Button @click="removeQuestionAction(element.id)">Delete</Button></AlertDialogAction
                 >
               </AlertDialogFooter>
             </AlertDialogContent>

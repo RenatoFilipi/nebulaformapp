@@ -1,19 +1,14 @@
 <script setup lang="ts">
 import type { Database } from "~/lib/database.types";
 import type { statusType } from "~/lib/utils.types";
-import { useEditorStore } from "~/stores/editor";
 import { watch } from "vue";
 import type { openEndedProps, multipleChoiceProps, likertScaleProps, elementProps } from "~/lib/utils.interfaces";
 import { LayoutGrid, Loader2 } from "lucide-vue-next";
-import { useToast } from "@/components/ui/toast/use-toast";
-import type { SBformsType, SBquestionsType } from "~/lib/utils.types";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import type { SBformsType } from "~/lib/utils.types";
 
 const supabase = useSupabaseClient<Database>();
 const user = useSupabaseUser();
 const route = useRoute();
-const editorStore = useEditorStore();
-const { toast } = useToast();
 
 useHead({
   title: "Editor - Nebulaform",
@@ -160,6 +155,18 @@ const afterQuestionsFetch = async () => {
   statusQuestions.value = "isIdle";
 };
 
+const addQuestion = (question: elementProps) => {
+  questions.value.push(question);
+};
+
+const removeQuestion = (id: string) => {
+  questions.value = questions.value.filter((el) => el.id !== id);
+};
+
+const publishForm = () => {
+  console.log(questions.value);
+};
+
 afterFormFetch();
 afterQuestionsFetch();
 </script>
@@ -172,7 +179,7 @@ afterQuestionsFetch();
           <TabsTrigger value="blocks">Blocks</TabsTrigger>
           <TabsTrigger value="preview">Preview</TabsTrigger>
         </TabsList>
-        <Button>Publish</Button>
+        <Button @click="publishForm">Publish</Button>
       </div>
       <div class="flex justify-center items-center p-4 mt-10">
         <TabsContent value="blocks"
@@ -186,8 +193,39 @@ afterQuestionsFetch();
               <span>Something went wrong, please try again.</span>
             </div>
           </div>
-          <div v-if="statusQuestions === 'isIdle' && questions.length <= 0">Empty</div></TabsContent
-        >
+          <div class="mt-24" v-if="statusQuestions === 'isIdle' && questions.length <= 0">
+            <div class="flex flex-col items-center justify-center">
+              <LayoutGrid class="mb-2 w-6 h-6" />
+              <span class="mb-2">No element to show</span>
+              <span class="text-sm text-zinc-500 mb-6">Start by adding elements to publish.</span>
+              <ApplicationPagesEditorAddElementButton :add-question-action="addQuestion" />
+            </div>
+          </div>
+          <div class="mt-24" v-if="statusQuestions === 'isIdle' && questions.length >= 1">
+            <div class="flex flex-col items-center justify-center gap-10 min-w-[800px]">
+              <div v-for="(question, index) in questions" :key="index">
+                <ApplicationPagesEditorMultipleChoice
+                  v-if="question.type === 'multipleChoice'"
+                  :id="question.id"
+                  :type="question.type"
+                  :props="(question.props as multipleChoiceProps)"
+                  :remove-question-action="removeQuestion" />
+                <ApplicationPagesEditorOpenEnded
+                  v-if="question.type === 'openEnded'"
+                  :id="question.id"
+                  :type="question.type"
+                  :props="(question.props as openEndedProps)"
+                  :remove-question-action="removeQuestion" />
+                <ApplicationPagesEditorLikertScale
+                  v-if="question.type === 'likertScale'"
+                  :id="question.id"
+                  :type="question.type"
+                  :props="(question.props as likertScaleProps)"
+                  :remove-question-action="removeQuestion" />
+              </div>
+              <ApplicationPagesEditorAddElementButton :add-question-action="addQuestion" />
+            </div></div
+        ></TabsContent>
         <TabsContent value="preview">wip - Preview</TabsContent>
       </div>
     </Tabs>

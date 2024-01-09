@@ -1,24 +1,12 @@
 <script setup lang="ts">
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import type { elementProps, likertScaleProps } from "~/lib/utils.interfaces";
 import { Trash } from "lucide-vue-next";
-import { useEditorStore } from "~/stores/editor";
 
-const editorStore = useEditorStore();
 const element = defineProps<{
   id: elementProps["id"];
   type: elementProps["type"];
   props: likertScaleProps;
+  removeQuestionAction: (id: string) => void;
 }>();
 </script>
 
@@ -46,7 +34,7 @@ const element = defineProps<{
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction as-child
-                  ><Button @click="editorStore.removeElement(element.id)">Delete</Button></AlertDialogAction
+                  ><Button @click="removeQuestionAction(element.id)">Delete</Button></AlertDialogAction
                 >
               </AlertDialogFooter>
             </AlertDialogContent>

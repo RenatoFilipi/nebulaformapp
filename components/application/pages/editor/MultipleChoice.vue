@@ -1,26 +1,14 @@
 <script setup lang="ts">
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import type { elementProps, multipleChoiceProps } from "~/lib/utils.interfaces";
 import { Trash } from "lucide-vue-next";
-import { useEditorStore } from "~/stores/editor";
 import { newUuid } from "~/lib/utils";
 import { AlertCircle, Plus } from "lucide-vue-next";
 
-const editorStore = useEditorStore();
 const element = defineProps<{
   id: elementProps["id"];
   type: elementProps["type"];
   props: multipleChoiceProps;
+  removeQuestionAction: (id: string) => void;
 }>();
 
 const handleDeleteOption = (optionValue: string) => {
@@ -28,7 +16,8 @@ const handleDeleteOption = (optionValue: string) => {
 };
 
 const handleAddOption = () => {
-  element.props.options.push({ value: newUuid(), label: "Option Label" });
+  const newId = newUuid();
+  element.props.options.push({ id: newId, label: "Option Label", value: newId });
 };
 </script>
 
@@ -58,9 +47,7 @@ const handleAddOption = () => {
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction as-child
-                  ><Button type="button" @click="editorStore.removeElement(element.id)"
-                    >Delete</Button
-                  ></AlertDialogAction
+                  ><Button type="button" @click="removeQuestionAction(element.id)">Delete</Button></AlertDialogAction
                 >
               </AlertDialogFooter>
             </AlertDialogContent>
